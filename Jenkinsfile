@@ -2,53 +2,28 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
+        DOCKER_IMAGE = 'mariemelayeb731 spring-boot-angular-17-postgresql-example:latest'
     }
 
     stages {
-        stage('Build Backend') {
+        stage('Cloner le projet') {
             steps {
-                dir('backend') {
-                    sh 'mvn clean package'
-                }
+                git branch: 'main', url: 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
             }
         }
 
-        stage('Build Frontend') {
+        stage('Vérifier package.json') {
             steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'npm run build -- --configuration production'
-                }
+                sh 'jq . package.json' // Vérifie la syntaxe JSON avant npm install
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Construire l’application') {
             steps {
-                sh 'docker-compose build'
+                sh './mvnw clean package' // Backend Spring Boot
+                
+                sh 'npm install' // Installer les dépendances Angular
+                sh 'npm run build' // Construire l'application Angular
             }
         }
-
-        stage('Push Docker Images') {
-            steps {
-                sh 'echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin'
-                sh 'docker-compose push'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'docker-compose up -d'
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline exécuté avec succès 🚀'
-        }
-        failure {
-            echo 'Le build ou le déploiement a échoué ❌'
-        }
-    }
-}
+    }}
