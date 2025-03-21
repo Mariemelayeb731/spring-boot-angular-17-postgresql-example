@@ -24,9 +24,11 @@ pipeline {
                     sh './mvnw clean package -DskipTests' // Backend Spring Boot
                 }
                 dir('angular-17-client') {
-                    sh 'npm install' // Installer les dépendances Angular
-                    sh 'npm run build' // Construire l'application Angular
-                }
+            sh 'pwd' // Afficher le répertoire courant pour vérifier où tu es
+            sh 'ls -alh' // Vérifier que angular.json est bien présent
+            sh 'npm install' // Installer les dépendances Angular
+            sh 'npm run build' // Construire l'application Angular
+        }
             }
         }
     }
