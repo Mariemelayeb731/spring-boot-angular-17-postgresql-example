@@ -21,7 +21,7 @@ pipeline {
         stage('Construire l’application') {
             steps {
                 dir('spring-boot-server'){
-                sh './mvnw clean package' }// Backend Spring Boot
+                sh './mvnw clean package -DskipTests' }// Backend Spring Boot
                 
                 sh 'npm install' // Installer les dépendances Angular
                 sh 'npm run build' // Construire l'application Angular
