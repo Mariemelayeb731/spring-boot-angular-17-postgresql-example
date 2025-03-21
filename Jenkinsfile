@@ -28,6 +28,7 @@ pipeline {
             sh 'pwd' // Afficher le répertoire courant pour vérifier où tu es
             sh 'ls -alh' // Vérifier que angular.json est bien présent
             sh 'npm install' // Installer les dépendances Angular
+            sh 'npm install @angular/cli'
             sh 'npm run build' // Construire l'application Angular
         }
             }
