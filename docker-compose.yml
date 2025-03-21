@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ~/spring-boot-angular-17-postgresql-example/spring-boot-server
+
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ~/spring-boot-angular-17-postgresql-example/angular-17-client
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
