@@ -22,7 +22,7 @@ pipeline {
             steps {
                 dir('spring-boot-server'){
                 sh './mvnw clean package -DskipTests' }// Backend Spring Boot
-                
+                dir('angular-17-client'){
                 sh 'npm install' // Installer les dépendances Angular
                 sh 'npm run build' // Construire l'application Angular
             }
