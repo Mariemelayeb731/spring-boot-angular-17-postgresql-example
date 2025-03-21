@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'mariemelayeb731 spring-boot-angular-17-postgresql-example:latest'
+        DOCKER_IMAGE = 'mariemelayeb731/spring-boot-angular-17-postgresql-example:latest'
     }
 
     stages {
@@ -20,11 +20,14 @@ pipeline {
 
         stage('Construire l’application') {
             steps {
-                dir('spring-boot-server'){
-                sh './mvnw clean package -DskipTests' }// Backend Spring Boot
-                dir('angular-17-client'){
-                sh 'npm install' // Installer les dépendances Angular
-                sh 'npm run build' // Construire l'application Angular
+                dir('spring-boot-server') {
+                    sh './mvnw clean package -DskipTests' // Backend Spring Boot
+                }
+                dir('angular-17-client') {
+                    sh 'npm install' // Installer les dépendances Angular
+                    sh 'npm run build' // Construire l'application Angular
+                }
             }
         }
-    }}
+    }
+}
