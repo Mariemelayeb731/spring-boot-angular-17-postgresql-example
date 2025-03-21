@@ -21,6 +21,7 @@ pipeline {
         stage('Construire l’application') {
             steps {
                 dir('spring-boot-server') {
+                    sh 'chmod +x ./mvnw'
                     sh './mvnw clean package -DskipTests' // Backend Spring Boot
                 }
                 dir('angular-17-client') {
