@@ -11,7 +11,7 @@ services:
 
   frontend:
     build:
-      context: ~/spring-boot-angular-17-postgresql-example/angular-17-client
+      context: ~/spring-boot-angular-17-postgresql-example/frontend
     ports:
       - "80:80"
     networks:
