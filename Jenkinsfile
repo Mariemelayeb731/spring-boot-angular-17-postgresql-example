@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'mariemelayeb731/spring-boot-angular-17-postgresql-example:latest'
+        BACKEND_IMAGE = 'mariemelayeb731/spring-boot-backend:latest'
+        FRONTEND_IMAGE = 'mariemelayeb731/angular-frontend:latest'
     }
 
     stages {
@@ -15,7 +16,7 @@ pipeline {
         stage('Vérifier package.json') {
             steps {
                 dir('frontend') {
-                    sh 'jq . package.json' // Vérifie la syntaxe JSON dans le bon dossier
+                    sh 'jq . package.json'
                 }
             }
         }
@@ -24,11 +25,9 @@ pipeline {
             steps {
                 dir('spring-boot-server') {
                     sh 'chmod +x ./mvnw'
-                    sh './mvnw clean package -DskipTests' // Backend Spring Boot
+                    sh './mvnw clean package -DskipTests'
                 }
                 dir('frontend') {
-                    sh 'pwd'
-                    sh 'ls -alh'
                     sh 'npm install'
                     sh 'npm install @angular/cli'
                     sh 'npm run build'
@@ -78,11 +77,25 @@ pipeline {
             }
         }
 
-        stage('Construire et Pousser l’image Docker') {
+        stage('Construire et Pousser les images Docker') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
-                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/']) {
-                    sh 'docker push $DOCKER_IMAGE'
+                script {
+                    // Build backend image
+                    dir('spring-boot-server') {
+                        sh 'docker build -t $BACKEND_IMAGE -f spring-boot-server/Dockerfile .'
+
+                    }
+
+                    // Build frontend image (si tu as un Dockerfile dans frontend)
+                    dir('frontend') {
+                        sh 'docker build -t $FRONTEND_IMAGE -f Dockerfile .'
+                    }
+
+                    // Push les deux images
+                    withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/']) {
+                        sh 'docker push $BACKEND_IMAGE'
+                        sh 'docker push $FRONTEND_IMAGE'
+                    }
                 }
             }
         }
@@ -90,7 +103,12 @@ pipeline {
         stage('Déployer sur le serveur') {
             steps {
                 sshagent(['serveur-ssh']) {
-                    sh 'ssh user@server "docker pull $DOCKER_IMAGE && docker-compose up -d"'
+                    sh '''
+                    ssh user@server "
+                        docker pull $BACKEND_IMAGE &&
+                        docker pull $FRONTEND_IMAGE &&
+                        docker-compose up -d"
+                    '''
                 }
             }
         }

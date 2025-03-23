@@ -5,7 +5,8 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copier le fichier jar compilé dans l'image
-COPY target/*.jar app.jar
+COPY target/spring-boot-jpa-postgresql-0.0.1-SNAPSHOT.jar app.jar
+
 
 # Exposer le port 8080 pour l'application Spring Boot
 EXPOSE 8080
