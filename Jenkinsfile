@@ -15,17 +15,23 @@ pipeline {
 
         stage('Construire l’application') {
             steps {
+                 dir('spring-boot-server'){
                 sh './mvnw clean package' // Backend Spring Boot
+                 }
+                dir('angular-17-client'){
                 sh 'npm install '
                 sh 'npm run build' // Frontend Angular
             }
-        }
+        }}
 
         stage('Tests') {
             steps {
+                dir('spring-boot-server'){
                 sh './mvnw test' // Tests backend
+                }
+                dir('angular-17-client'){
                 sh 'npm test'    // Tests frontend
-            }
+            }}
         }
 
         stage('Construire et Pousser l’image Docker') {
