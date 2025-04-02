@@ -16,7 +16,7 @@ pipeline {
         stage('Construire l’application') {
             steps {
                  dir('spring-boot-server'){
-                sh './mvnw clean package' // Backend Spring Boot
+                sh './mvnw clean install -U' // Backend Spring Boot
                  }
                 dir('angular-17-client'){
                 sh 'npm install '
