@@ -20,22 +20,28 @@ pipeline {
         stage('Build Spring Boot') {
             steps {
                 dir('spring-boot-server') {
-                    sh 'mvn clean package'
+                    sh './mvnw clean package -DskipTests'
                 }
             }
         }
 
         stage('Tests') {
             steps {
-                echo 'Lancer les tests ici'
-                // Ajoute des étapes de test si besoin
+                dir('spring-boot-server') {
+                    sh './mvnw test'
+                }
             }
         }
 
-        stage('Deploy (optionnel)') {
+        stage('Build Docker Images') {
             steps {
-                echo 'Déploiement (Docker, Nginx, etc.)'
-                // Tu peux dockeriser l’app ici plus tard
+                sh 'docker-compose build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose up -d'
             }
         }
     }
