@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim as build
 COPY target/*.jar app.jar
 
 # Étape 3: Exposer le port que l'application va utiliser
-EXPOSE 8080
+EXPOSE 8081
 
 # Étape 4: Commande pour démarrer l'application
 ENTRYPOINT ["java", "-jar", "/app.jar"]
