@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Cloner le projet') {
             steps {
-                git 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
+                git branch: 'master', 
+                url: 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
             }
         }
 
@@ -35,7 +36,15 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose build'
+                script {
+                    // Construire chaque image séparément avec le bon contexte
+                    dir('spring-boot-server') {
+                        sh 'docker build -t spring-boot-server .'
+                    }
+                    dir('angular-17-client') {
+                        sh 'docker build -t angular-17-client .'
+                    }
+                }
             }
         }
 
@@ -45,4 +54,5 @@ pipeline {
             }
         }
     }
+
 }
