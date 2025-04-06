@@ -20,7 +20,7 @@ pipeline {
         stage('Build Spring Boot') {
             steps {
                 dir('spring-boot-server') {
-                    sh './mvnw clean package -DskipTests'
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
         stage('Tests') {
             steps {
                 dir('spring-boot-server') {
-                    sh './mvnw test'
+                    sh 'mvn test'
                 }
             }
         }
