@@ -3,7 +3,7 @@ pipeline {
     tools {
         // Assure-toi que NodeJS et Maven sont installés sur Jenkins
         nodejs 'nodejs' // C’est le nom de l'installation NodeJS dans Jenkins (à définir dans Global Tool Configuration)
-        maven 'Maven 3.9.9' // Le nom de ton installation Maven
+        maven 'Maven-3.9.9' // Le nom de ton installation Maven
     }
 
     stages {
