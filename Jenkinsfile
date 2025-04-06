@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build Angular') {
             steps {
-                dir('frontend') {
+                dir('angular-17-client') {
                     sh 'npm install'
                     sh 'npm run build'
                 }
@@ -19,8 +19,8 @@ pipeline {
 
         stage('Build Spring Boot') {
             steps {
-                dir('backend') {
-                    sh './mvnw clean package'
+                dir('spring-boot-server') {
+                    sh 'mvn clean package'
                 }
             }
         }
