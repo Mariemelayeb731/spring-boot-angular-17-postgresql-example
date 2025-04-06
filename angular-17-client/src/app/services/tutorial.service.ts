@@ -12,7 +12,7 @@ export class TutorialService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Tutorial[]> {
-    return this.http.get<Tutorial[]>(baseUrl);
+    return this.http.get<Tutorial[]>(baseUrl); // Utilisez baseUrl au lieu de API_URL
   }
 
   get(id: any): Observable<Tutorial> {
@@ -35,7 +35,7 @@ export class TutorialService {
     return this.http.delete(baseUrl);
   }
 
-  findByTitle(title: any): Observable<Tutorial[]> {
+  findByTitle(title: string): Observable<Tutorial[]> {
     return this.http.get<Tutorial[]>(`${baseUrl}?title=${title}`);
   }
 }

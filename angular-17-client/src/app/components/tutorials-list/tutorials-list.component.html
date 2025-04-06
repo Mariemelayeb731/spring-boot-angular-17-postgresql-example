@@ -42,4 +42,7 @@
       [currentTutorial]="currentTutorial"
     ></app-tutorial-details>
   </div>
+<div *ngFor="let tutorial of tutorials">
+  {{ tutorial.title }} - {{ tutorial.description }}
+</div>
 </div>

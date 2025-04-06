@@ -30,11 +30,13 @@ export class TutorialsListComponent implements OnInit {
   }
 
   refreshList(): void {
-    this.retrieveTutorials();
-    this.currentTutorial = {};
-    this.currentIndex = -1;
-  }
-
+  this.tutorialService.getAll().subscribe({
+    next: (data) => {
+      this.tutorials = data;
+    },
+    error: (e) => console.error(e)
+  });
+}
   setActiveTutorial(tutorial: Tutorial, index: number): void {
     this.currentTutorial = tutorial;
     this.currentIndex = index;

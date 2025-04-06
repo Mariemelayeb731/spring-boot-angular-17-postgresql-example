@@ -1,0 +1,234 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------< [0;36mcom.bezkoder:spring-boot-jpa-postgresql[0;1m >---------------[m
+[[1;34mINFO[m] [1mBuilding spring-boot-jpa-postgresql 0.0.1-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m>>> [0;32mspring-boot-maven-plugin:3.1.0:run[m [1m(default-cli)[0;1m > [0;1mtest-compile[m @ [36mspring-boot-jpa-postgresql[0;1m >>>[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.3.1:resources[m [1m(default-resources)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Copying 1 resource from src/main/resources to target/classes
+[[1;34mINFO[m] Copying 0 resource from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.11.0:compile[m [1m(default-compile)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.3.1:testResources[m [1m(default-testResources)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] skip non existing resourceDirectory /home/maryem/spring-boot-angular-17-postgresql-example/spring-boot-server/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.11.0:testCompile[m [1m(default-testCompile)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m<<< [0;32mspring-boot-maven-plugin:3.1.0:run[m [1m(default-cli)[0;1m < [0;1mtest-compile[m @ [36mspring-boot-jpa-postgresql[0;1m <<<[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mspring-boot-maven-plugin:3.1.0:run[m [1m(default-cli)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.1.0)
+
+2025-04-05T00:25:59.878+01:00  INFO 5851 --- [           main] s.j.p.SpringBootJpaPostgresqlApplication : Starting SpringBootJpaPostgresqlApplication using Java 21.0.6 with PID 5851 (/home/maryem/spring-boot-angular-17-postgresql-example/spring-boot-server/target/classes started by maryem in /home/maryem/spring-boot-angular-17-postgresql-example/spring-boot-server)
+2025-04-05T00:25:59.881+01:00  INFO 5851 --- [           main] s.j.p.SpringBootJpaPostgresqlApplication : No active profile set, falling back to 1 default profile: "default"
+2025-04-05T00:26:01.719+01:00  INFO 5851 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-05T00:26:01.956+01:00  INFO 5851 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 153 ms. Found 1 JPA repository interfaces.
+2025-04-05T00:26:04.428+01:00  INFO 5851 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-04-05T00:26:04.487+01:00  INFO 5851 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-05T00:26:04.487+01:00  INFO 5851 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2025-04-05T00:26:05.262+01:00  INFO 5851 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-05T00:26:05.265+01:00  INFO 5851 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5281 ms
+2025-04-05T00:26:06.339+01:00  INFO 5851 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-05T00:26:07.147+01:00  INFO 5851 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.2.Final
+2025-04-05T00:26:07.152+01:00  INFO 5851 --- [           main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-04-05T00:26:07.668+01:00  INFO 5851 --- [           main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2025-04-05T00:26:08.102+01:00  INFO 5851 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-05T00:26:08.125+01:00  INFO 5851 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-05T00:26:09.865+01:00  INFO 5851 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@214b342f
+2025-04-05T00:26:09.866+01:00  INFO 5851 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-05T00:26:10.262+01:00  INFO 5851 --- [           main] org.hibernate.orm.dialect                : HHH035001: Using dialect: org.hibernate.dialect.PostgreSQLDialect, version: org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$DialectResolutionInfoImpl@7d47dfed
+2025-04-05T00:26:11.547+01:00  INFO 5851 --- [           main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2025-04-05T00:26:13.400+01:00  INFO 5851 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025-04-05T00:26:13.455+01:00  INFO 5851 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-05T00:26:14.003+01:00  WARN 5851 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-05T00:26:14.632+01:00  INFO 5851 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2025-04-05T00:26:14.646+01:00  INFO 5851 --- [           main] s.j.p.SpringBootJpaPostgresqlApplication : Started SpringBootJpaPostgresqlApplication in 16.968 seconds (process running for 17.946)
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------< [0;36mcom.bezkoder:spring-boot-jpa-postgresql[0;1m >---------------[m
+[[1;34mINFO[m] [1mBuilding spring-boot-jpa-postgresql 0.0.1-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m>>> [0;32mspring-boot-maven-plugin:3.1.0:run[m [1m(default-cli)[0;1m > [0;1mtest-compile[m @ [36mspring-boot-jpa-postgresql[0;1m >>>[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.3.1:resources[m [1m(default-resources)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Copying 1 resource from src/main/resources to target/classes
+[[1;34mINFO[m] Copying 0 resource from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.11.0:compile[m [1m(default-compile)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.3.1:testResources[m [1m(default-testResources)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] skip non existing resourceDirectory /home/maryem/spring-boot-angular-17-postgresql-example/spring-boot-server/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.11.0:testCompile[m [1m(default-testCompile)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m<<< [0;32mspring-boot-maven-plugin:3.1.0:run[m [1m(default-cli)[0;1m < [0;1mtest-compile[m @ [36mspring-boot-jpa-postgresql[0;1m <<<[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mspring-boot-maven-plugin:3.1.0:run[m [1m(default-cli)[m @ [36mspring-boot-jpa-postgresql[0;1m ---[m
+[[1;34mINFO[m] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.1.0)
+
+2025-04-05T00:26:33.722+01:00  INFO 6958 --- [           main] s.j.p.SpringBootJpaPostgresqlApplication : Starting SpringBootJpaPostgresqlApplication using Java 21.0.6 with PID 6958 (/home/maryem/spring-boot-angular-17-postgresql-example/spring-boot-server/target/classes started by maryem in /home/maryem/spring-boot-angular-17-postgresql-example/spring-boot-server)
+2025-04-05T00:26:33.725+01:00  INFO 6958 --- [           main] s.j.p.SpringBootJpaPostgresqlApplication : No active profile set, falling back to 1 default profile: "default"
+2025-04-05T00:26:34.606+01:00  INFO 6958 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-05T00:26:34.698+01:00  INFO 6958 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 79 ms. Found 1 JPA repository interfaces.
+2025-04-05T00:26:35.180+01:00  INFO 6958 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-04-05T00:26:35.190+01:00  INFO 6958 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-05T00:26:35.190+01:00  INFO 6958 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2025-04-05T00:26:35.277+01:00  INFO 6958 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-05T00:26:35.279+01:00  INFO 6958 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1505 ms
+2025-04-05T00:26:35.433+01:00  INFO 6958 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-05T00:26:35.469+01:00  INFO 6958 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.2.Final
+2025-04-05T00:26:35.471+01:00  INFO 6958 --- [           main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-04-05T00:26:35.572+01:00  INFO 6958 --- [           main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2025-04-05T00:26:35.710+01:00  INFO 6958 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-05T00:26:35.727+01:00  INFO 6958 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-05T00:26:36.097+01:00  INFO 6958 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@402b4f81
+2025-04-05T00:26:36.099+01:00  INFO 6958 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-05T00:26:36.122+01:00  INFO 6958 --- [           main] org.hibernate.orm.dialect                : HHH035001: Using dialect: org.hibernate.dialect.PostgreSQLDialect, version: org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$DialectResolutionInfoImpl@7336fd8f
+2025-04-05T00:26:36.335+01:00  INFO 6958 --- [           main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2025-04-05T00:26:37.211+01:00  INFO 6958 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025-04-05T00:26:37.258+01:00  INFO 6958 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-05T00:26:37.654+01:00  WARN 6958 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-05T00:26:37.965+01:00  WARN 6958 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-04-05T00:26:37.968+01:00  INFO 6958 --- [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-05T00:26:37.972+01:00  INFO 6958 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-05T00:26:37.982+01:00  INFO 6958 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-04-05T00:26:37.984+01:00  INFO 6958 --- [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-04-05T00:26:37.998+01:00  INFO 6958 --- [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-04-05T00:26:38.054+01:00 ERROR 6958 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  5.052 s
+[[1;34mINFO[m] Finished at: 2025-04-05T00:26:38+01:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal [32morg.springframework.boot:spring-boot-maven-plugin:3.1.0:run[m [1m(default-cli)[m on project [36mspring-boot-jpa-postgresql[m: [1;31mProcess terminated with exit code: 1[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+2025-04-05T00:28:30.150+01:00  INFO 5851 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-05T00:28:30.150+01:00  INFO 5851 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-05T00:28:30.153+01:00  INFO 5851 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-04-05T00:28:31.003+01:00 DEBUG 5851 --- [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+2025-04-05T00:28:53.572+01:00 DEBUG 5851 --- [nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+2025-04-05T00:29:13.586+01:00 DEBUG 5851 --- [nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+2025-04-05T00:29:14.785+01:00 DEBUG 5851 --- [nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+2025-04-05T00:44:26.640+01:00 DEBUG 5851 --- [nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.description,
+        t1_0.published,
+        t1_0.title 
+    from
+        tutorials t1_0
