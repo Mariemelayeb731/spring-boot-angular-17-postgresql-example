@@ -1,4 +1,4 @@
-pipeline {
+pipeline { 
     agent any
 
     stages {
@@ -26,10 +26,36 @@ pipeline {
             }
         }
 
-        stage('Tests') {
+        stage('Tests Unitaires Spring Boot') {
             steps {
                 dir('spring-boot-server') {
                     sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Tests Unitaires Angular') {
+            steps {
+                dir('angular-17-client') {
+                    sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                }
+            }
+        }
+
+        stage('Tests d\'intégration avec PostgreSQL') {
+            steps {
+                dir('spring-boot-server') {
+                    sh 'docker-compose -f docker-compose.test.yml up -d'
+                    sh 'mvn verify -P integration-tests'
+                    sh 'docker-compose -f docker-compose.test.yml down'
+                }
+            }
+        }
+
+        stage('Tests End-to-End avec Cypress') {
+            steps {
+                dir('angular-17-client') {
+                    sh 'npx cypress run'
                 }
             }
         }
@@ -54,5 +80,4 @@ pipeline {
             }
         }
     }
-
 }
