@@ -34,13 +34,19 @@ pipeline {
             }
         }
 
+       
         stage('Tests Unitaires Angular') {
-            steps {
-                dir('angular-17-client') {
-                    sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
-                }
+    steps {
+        dir('angular-17-client') {
+            script {
+                // Set the CHROME_BIN environment variable if not already set
+                sh 'export CHROME_BIN=/usr/bin/chromium-browser'  // Adjust this path as needed
+                sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
             }
         }
+    }
+}
+
 
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
