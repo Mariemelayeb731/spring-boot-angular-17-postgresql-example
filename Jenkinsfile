@@ -1,5 +1,8 @@
 pipeline { 
     agent any
+    environment {
+        CHROME_BIN = '/usr/bin/chromium-browser'  // Ensure the path is correct
+    }
 
     stages {
         stage('Cloner le projet') {
