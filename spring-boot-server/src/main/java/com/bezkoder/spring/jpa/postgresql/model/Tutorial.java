@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Tutorial {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY) // Correction ici
   private long id;
 
   @Column(name = "title")
