@@ -9,7 +9,7 @@ import { TutorialService } from '../../services/tutorial.service';
   styleUrls: ['./tutorial-details.component.css'],
 })
 export class TutorialDetailsComponent implements OnInit {
-  @Input() viewMode = false;
+  @Input() viewMode: boolean = false;
 
   @Input() currentTutorial: Tutorial = {
     title: '',
@@ -28,11 +28,12 @@ export class TutorialDetailsComponent implements OnInit {
   ngOnInit(): void {
     if (!this.viewMode) {
       this.message = '';
-      this.getTutorial(this.route.snapshot.params['id']);
+      const id = +this.route.snapshot.params['id']; // convert to number
+      this.getTutorial(id);
     }
   }
 
-  getTutorial(id: string): void {
+  getTutorial(id: number): void {
     this.tutorialService.get(id).subscribe({
       next: (data) => {
         this.currentTutorial = data;
@@ -43,6 +44,8 @@ export class TutorialDetailsComponent implements OnInit {
   }
 
   updatePublished(status: boolean): void {
+    if (this.currentTutorial.id === undefined) return;
+
     const data = {
       title: this.currentTutorial.title,
       description: this.currentTutorial.description,
@@ -55,8 +58,8 @@ export class TutorialDetailsComponent implements OnInit {
       next: (res) => {
         console.log(res);
         this.currentTutorial.published = status;
-        this.message = res.message
-          ? res.message
+        this.message = (res as any).message
+          ? (res as any).message
           : 'The status was updated successfully!';
       },
       error: (e) => console.error(e)
@@ -64,6 +67,8 @@ export class TutorialDetailsComponent implements OnInit {
   }
 
   updateTutorial(): void {
+    if (this.currentTutorial.id === undefined) return;
+
     this.message = '';
 
     this.tutorialService
@@ -71,8 +76,8 @@ export class TutorialDetailsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.message = res.message
-            ? res.message
+          this.message = (res as any).message
+            ? (res as any).message
             : 'This tutorial was updated successfully!';
         },
         error: (e) => console.error(e)
@@ -80,6 +85,8 @@ export class TutorialDetailsComponent implements OnInit {
   }
 
   deleteTutorial(): void {
+    if (this.currentTutorial.id === undefined) return;
+
     this.tutorialService.delete(this.currentTutorial.id).subscribe({
       next: (res) => {
         console.log(res);

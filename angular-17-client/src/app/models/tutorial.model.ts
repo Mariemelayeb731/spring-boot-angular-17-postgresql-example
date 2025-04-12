@@ -1,5 +1,3 @@
-// src/app/models/tutorial.model.ts
-
 export class Tutorial {
     id?: number;
     title: string;

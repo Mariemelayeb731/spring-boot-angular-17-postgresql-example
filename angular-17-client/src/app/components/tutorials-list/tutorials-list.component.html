@@ -18,31 +18,34 @@
       </div>
     </div>
   </div>
+
   <div class="col-md-6">
     <h4>Tutorials List</h4>
     <ul class="list-group">
-      @for (tutorial of tutorials; track tutorial.id; let i = $index) {
       <li
+        *ngFor="let tutorial of tutorials; let i = index; trackBy: trackById"
         class="list-group-item"
-        [class.active]="i == currentIndex"
+        [class.active]="i === currentIndex"
         (click)="setActiveTutorial(tutorial, i)"
       >
         {{ tutorial.title }}
       </li>
-      }
     </ul>
 
     <button class="m-3 btn btn-sm btn-danger" (click)="removeAllTutorials()">
       Remove All
     </button>
   </div>
+
   <div class="col-md-6">
     <app-tutorial-details
       [viewMode]="true"
       [currentTutorial]="currentTutorial"
     ></app-tutorial-details>
   </div>
+</div>
+
+<!-- Affichage supplémentaire -->
 <div *ngFor="let tutorial of tutorials">
   {{ tutorial.title }} - {{ tutorial.description }}
-</div>
 </div>

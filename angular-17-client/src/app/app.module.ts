@@ -1,26 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms'; // Nécessaire pour ngModel
+import { HttpClientModule } from '@angular/common/http'; // Nécessaire pour TutorialService
+// Composants
 import { AppComponent } from './app.component';
-import { AddTutorialComponent } from './components/add-tutorial/add-tutorial.component';
-import { TutorialDetailsComponent } from './components/tutorial-details/tutorial-details.component';
 import { TutorialsListComponent } from './components/tutorials-list/tutorials-list.component';
+import { TutorialDetailsComponent } from './components/tutorial-details/tutorial-details.component';
 
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
-    AddTutorialComponent,
-    TutorialDetailsComponent,
-    TutorialsListComponent
+    TutorialsListComponent,
+    TutorialDetailsComponent // <-- Ajouter cette ligne
   ],
   imports: [
+    RouterModule,
     BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule
+    FormsModule, // <-- Nécessaire pour les formulaires
+    HttpClientModule // <-- Nécessaire pour les appels HTTP
   ],
   providers: [],
   bootstrap: [AppComponent]
