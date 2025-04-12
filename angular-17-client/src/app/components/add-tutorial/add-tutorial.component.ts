@@ -1,45 +1,33 @@
-import { Component } from '@angular/core';
-import { Tutorial } from '../../models/tutorial.model';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AddTutorialComponent } from './add-tutorial.component';
 import { TutorialService } from '../../services/tutorial.service';
 
-@Component({
-  selector: 'app-add-tutorial',
-  templateUrl: './add-tutorial.component.html',
-  styleUrls: ['./add-tutorial.component.css'],
-})
-export class AddTutorialComponent {
-  tutorial: Tutorial = {
-  title: '',
-  description: '',
-  published: false
-};
-  submitted = false;
+describe('AddTutorialComponent', () => {
+  let component: AddTutorialComponent;
+  let fixture: ComponentFixture<AddTutorialComponent>;
 
-  constructor(private tutorialService: TutorialService) {}
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule], // Ajout crucial
+      declarations: [AddTutorialComponent],
+      providers: [TutorialService]
+    }).compileComponents();
+  });
 
-  saveTutorial(): void {
-    // Format des données adapté au backend Spring Boot
-    const data = {
-      title: this.tutorial.title,
-      description: this.tutorial.description,
-      published: this.tutorial.published
-    };
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddTutorialComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    this.tutorialService.create(data).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.submitted = true;
-      },
-      error: (e) => console.error(e)
-    });
-  }
+  it('devrait créer le composant', () => {
+    expect(component).toBeTruthy();
+  });
 
-  newTutorial(): void {
-    this.submitted = false;
-    this.tutorial = {
-      title: '',
-      description: '',
-      published: false
-    };
-  }
-}
+  it('devrait réinitialiser le formulaire', () => {
+    component.newTutorial();
+    expect(component.submitted).toBeFalse();
+    expect(component.tutorial.title).toBe('');
+  });
+});

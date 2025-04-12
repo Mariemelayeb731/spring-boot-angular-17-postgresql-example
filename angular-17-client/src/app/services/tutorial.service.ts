@@ -6,33 +6,33 @@ import { Tutorial } from '../models/tutorial.model';
 const baseUrl = 'http://localhost:8080/api/tutorials';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class TutorialService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Tutorial[]> {
-    return this.http.get<Tutorial[]>(baseUrl); // Utilisez baseUrl au lieu de API_URL
+    return this.http.get<Tutorial[]>(baseUrl);
   }
 
-  get(id: any): Observable<Tutorial> {
+  get(id: number): Observable<Tutorial> {
     return this.http.get<Tutorial>(`${baseUrl}/${id}`);
   }
 
-  create(data: any): Observable<any> {
-    return this.http.post(baseUrl, data);
+  create(data: Tutorial): Observable<Tutorial> {
+    return this.http.post<Tutorial>(baseUrl, data);
   }
 
-  update(id: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
+  update(id: number, data: Tutorial): Observable<Tutorial> {
+    return this.http.put<Tutorial>(`${baseUrl}/${id}`, data);
   }
 
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${baseUrl}/${id}`);
   }
 
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
+  deleteAll(): Observable<void> {
+    return this.http.delete<void>(baseUrl);
   }
 
   findByTitle(title: string): Observable<Tutorial[]> {
