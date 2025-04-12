@@ -54,7 +54,7 @@ pipeline {
             }
         }
 
-        stage('Tests d\intégration avec PostgreSQL') {
+        stage('Tests d\'intégration avec PostgreSQL') {
             steps {
                 dir('spring-boot-server') {
                     sh 'docker-compose -f docker-compose.test.yml up -d'
