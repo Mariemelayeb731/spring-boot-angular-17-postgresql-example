@@ -34,27 +34,27 @@ pipeline {
             }
         }
 
-        stage('Tests Unitaires Angular') {
+        stage('Tests Angular (Simple)') {
             steps {
                 dir('angular-17-client') {
                     sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
                 }
             }
         }
-        stage('Tests Unitaires Angular') {
-    steps {
-        dir('angular-17-client') {
-            script {
-                // Set the CHROME_BIN environment variable if not already set
-                sh 'export CHROME_BIN=/usr/bin/chromium-browser'  // Adjust this path as needed
-                sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+
+        stage('Tests Angular (CHROME_BIN)') {
+            steps {
+                dir('angular-17-client') {
+                    script {
+                        // Set the CHROME_BIN environment variable if not already set
+                        sh 'export CHROME_BIN=/usr/bin/chromium-browser'  // Adjust this path if needed
+                        sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                    }
+                }
             }
         }
-    }
-}
 
-
-        stage('Tests d\'intégration avec PostgreSQL') {
+        stage('Tests d\intégration avec PostgreSQL') {
             steps {
                 dir('spring-boot-server') {
                     sh 'docker-compose -f docker-compose.test.yml up -d'
@@ -75,7 +75,6 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    // Construire chaque image séparément avec le bon contexte
                     dir('spring-boot-server') {
                         sh 'docker build -t spring-boot-server .'
                     }
