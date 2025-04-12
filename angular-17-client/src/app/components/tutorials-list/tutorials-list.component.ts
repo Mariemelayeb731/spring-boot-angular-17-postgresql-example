@@ -5,16 +5,21 @@ import { TutorialService } from '../../services/tutorial.service';
 @Component({
   selector: 'app-tutorials-list',
   templateUrl: './tutorials-list.component.html',
-  styleUrls: ['./tutorials-list.component.css'],
+  styleUrls: ['./tutorials-list.component.css']
 })
 export class TutorialsListComponent implements OnInit {
   tutorials?: Tutorial[];
-  currentTutorial: Tutorial = {};
+  currentTutorial: Tutorial = {
+    title: '',
+    description: '',
+    published: false
+  };
   currentIndex = -1;
-  title = '';
+  title = ''; // Ajout de la propriété manquante
 
   constructor(private tutorialService: TutorialService) {}
 
+  // Implémentation de OnInit
   ngOnInit(): void {
     this.retrieveTutorials();
   }
@@ -23,45 +28,41 @@ export class TutorialsListComponent implements OnInit {
     this.tutorialService.getAll().subscribe({
       next: (data) => {
         this.tutorials = data;
-        console.log(data);
       },
       error: (e) => console.error(e)
     });
   }
 
-  refreshList(): void {
-  this.tutorialService.getAll().subscribe({
-    next: (data) => {
-      this.tutorials = data;
-    },
-    error: (e) => console.error(e)
-  });
-}
+  // Ajout des méthodes manquantes
   setActiveTutorial(tutorial: Tutorial, index: number): void {
     this.currentTutorial = tutorial;
     this.currentIndex = index;
   }
 
-  removeAllTutorials(): void {
-    this.tutorialService.deleteAll().subscribe({
-      next: (res) => {
-        console.log(res);
-        this.refreshList();
+  searchTitle(): void {
+    this.tutorialService.findByTitle(this.title).subscribe({
+      next: (data) => {
+        this.tutorials = data;
       },
       error: (e) => console.error(e)
     });
   }
 
-  searchTitle(): void {
-    this.currentTutorial = {};
-    this.currentIndex = -1;
-
-    this.tutorialService.findByTitle(this.title).subscribe({
-      next: (data) => {
-        this.tutorials = data;
-        console.log(data);
+  removeAllTutorials(): void {
+    this.tutorialService.deleteAll().subscribe({
+      next: (res) => {
+        this.tutorials = [];
       },
       error: (e) => console.error(e)
     });
+  }
+
+  newTutorial(): void {
+    this.currentTutorial = {
+      title: '',
+      description: '',
+      published: false
+    };
+    this.currentIndex = -1;
   }
 }

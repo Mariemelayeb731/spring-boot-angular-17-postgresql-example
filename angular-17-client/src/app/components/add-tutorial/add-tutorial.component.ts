@@ -9,18 +9,20 @@ import { TutorialService } from '../../services/tutorial.service';
 })
 export class AddTutorialComponent {
   tutorial: Tutorial = {
-    title: '',
-    description: '',
-    published: false
-  };
+  title: '',
+  description: '',
+  published: false
+};
   submitted = false;
 
   constructor(private tutorialService: TutorialService) {}
 
   saveTutorial(): void {
+    // Format des données adapté au backend Spring Boot
     const data = {
       title: this.tutorial.title,
-      description: this.tutorial.description
+      description: this.tutorial.description,
+      published: this.tutorial.published
     };
 
     this.tutorialService.create(data).subscribe({

@@ -1,6 +1,6 @@
-export class Tutorial {
-  id: number = 0;
-  title: string = '';
-  description: string = '';
-  published: boolean = false;
+export interface Tutorial {
+  id?: number;     // 'id' optionnel
+  title: string;   // Obligatoire
+  description: string; // Obligatoire
+  published?: boolean; // Optionnel
 }

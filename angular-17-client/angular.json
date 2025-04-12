@@ -43,6 +43,16 @@
               "node_modules/jquery/dist/jquery.slim.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
+             
+              "node_modules/jquery/dist/jquery.min.js", // Cheval de base
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+             
+              "node_modules/popper.js/dist/umd/popper.min.js", // Chemin correct
+  "node_modules/bootstrap/dist/js/bootstrap.min.js"
+
+  "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" // Contient déjà Popper
+  "node_modules/popper.js/dist/umd/popper.min.js"
+
             ]
           },
           "configurations": {
