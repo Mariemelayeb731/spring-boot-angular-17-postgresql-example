@@ -1,6 +1,16 @@
-export interface Tutorial {
-  id?: number;     // 'id' optionnel
-  title: string;   // Obligatoire
-  description: string; // Obligatoire
-  published?: boolean; // Optionnel
-}
+// src/app/models/tutorial.model.ts
+
+export class Tutorial {
+    id?: number;
+    title: string;
+    description: string;
+    published?: boolean;
+  
+    constructor(title: string, description: string, published?: boolean, id?: number) {
+      this.title = title;
+      this.description = description;
+      this.published = published;
+      this.id = id;
+    }
+  }
+  
