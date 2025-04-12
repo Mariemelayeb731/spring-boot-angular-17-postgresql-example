@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-  currentTutorial: any;
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'] // <-- Correction : string[] au lieu d'un seul string
 })
 export class AppComponent {
-  title = 'Angular 17 Crud example';
+  title = 'angular-17-crud';
+
+  // Ajout si tu veux utiliser currentTutorial ici :
+  currentTutorial: any;
 }

@@ -15,11 +15,10 @@ export class TutorialsListComponent implements OnInit {
     published: false
   };
   currentIndex = -1;
-  title = ''; // Ajout de la propriété manquante
+  title = '';
 
   constructor(private tutorialService: TutorialService) {}
 
-  // Implémentation de OnInit
   ngOnInit(): void {
     this.retrieveTutorials();
   }
@@ -33,7 +32,6 @@ export class TutorialsListComponent implements OnInit {
     });
   }
 
-  // Ajout des méthodes manquantes
   setActiveTutorial(tutorial: Tutorial, index: number): void {
     this.currentTutorial = tutorial;
     this.currentIndex = index;
@@ -64,5 +62,10 @@ export class TutorialsListComponent implements OnInit {
       published: false
     };
     this.currentIndex = -1;
+  }
+
+  // ✅ Méthode ajoutée pour corriger l'erreur de trackBy
+  trackById(index: number, tutorial: Tutorial): any {
+    return tutorial.id;
   }
 }
