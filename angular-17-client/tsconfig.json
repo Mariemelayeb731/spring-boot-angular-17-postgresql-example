@@ -32,6 +32,6 @@
     "baseUrl": "src",
     "paths": {
       "@app/*": ["app/*"]
+    }
   }
-}
 }
