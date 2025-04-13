@@ -17,7 +17,7 @@ services:
 
   springboot:
     build:
-      context: .
+      context: ./spring-boot-server
       dockerfile: Dockerfile
     container_name: test-springboot
     environment:
