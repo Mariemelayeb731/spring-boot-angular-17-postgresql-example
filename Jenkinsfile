@@ -33,6 +33,25 @@ pipeline {
                 }
             }
         }
+        stage('Tests Angular (Simple)') {
+            steps {
+                dir('angular-17-client') {
+                    sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                }
+            }
+        }
+
+        stage('Tests Angular (CHROME_BIN)') {
+            steps {
+                dir('angular-17-client') {
+                    script {
+                        // Set the CHROME_BIN environment variable if not already set
+                        sh 'export CHROME_BIN=/usr/bin/chromium-browser'  // Adjust this path if needed
+                        sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                    }
+                }
+            }
+        }
 
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
@@ -44,6 +63,7 @@ pipeline {
                 sh 'docker-compose -f docker-compose.test.yml down'
             }
         }
+        
 
         stage('Tests End-to-End avec Cypress') {
             steps {
