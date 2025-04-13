@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:13
@@ -30,6 +28,8 @@ services:
       SPRING_DATASOURCE_USERNAME: bezkoder
       SPRING_DATASOURCE_PASSWORD: bez123
       SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      # Assurez-vous que l'endpoint actuator est exposé :
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: '*'
     depends_on:
       postgres:
         condition: service_healthy
@@ -37,9 +37,10 @@ services:
       - app_net
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
+      interval: 20s
       timeout: 10s
-      retries: 3
+      retries: 10
+      start_period: 40s
 
   angular:
     build:
