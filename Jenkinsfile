@@ -35,34 +35,32 @@ pipeline {
         }
         
         stage('Tests d\'intégration avec PostgreSQL') {
-    steps {
-        sh 'docker-compose -f docker-compose.test.yml up -d'
-        sh 'sleep 30'  // Attend 30 secondes pour s'assurer que PostgreSQL est prêt
-        dir('spring-boot-server') {
-            sh 'mvn verify -P integration-tests'
-}
-
- sh 'docker-compose -f docker-compose.test.yml down'
-    }
-}
-
-stage('Tests End-to-End avec Cypress') {
-    steps {
-        script {
-            // Assurez-vous que le répertoire Angular est correct
-            dir('angular-17-client') {
-                sh 'npx wait-on http://localhost:4200 --timeout 60000'
-
-                // Exécution des tests avec Cypress
-                sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+            steps {
+                sh 'docker-compose -f docker-compose.test.yml up -d'
+                sh 'sleep 30'  // Attend 30 secondes pour PostgreSQL
+                dir('spring-boot-server') {
+                    sh 'mvn verify -P integration-tests'
+                }
+                sh 'docker-compose -f docker-compose.test.yml down'
             }
         }
-    }
-}
 
+        stage('Tests End-to-End avec Cypress') {
+            steps {
+                script {
+                    dir('angular-17-client') {
+                        // Lancer un serveur local pour tester l’app Angular
+                        sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
 
+                        // Attendre que le serveur soit prêt
+                        sh 'npx wait-on http://localhost:4200 --timeout 60000'
 
-
+                        // Lancer les tests Cypress
+                        sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+                    }
+                }
+            }
+        }
 
         stage('Build Docker Images') {
             steps {
