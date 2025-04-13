@@ -6,6 +6,7 @@ import { TutorialDetailsComponent } from './components/tutorial-details/tutorial
 import { AddTutorialComponent } from './components/add-tutorial/add-tutorial.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // ✅ Ajouté ici
 
 const routes: Routes = [
   { path: '', redirectTo: '/tutorials', pathMatch: 'full' },
@@ -18,13 +19,14 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     TutorialsListComponent,
-    TutorialDetailsComponent, // Assurez-vous que ce composant est déclaré ici
+    TutorialDetailsComponent,
     AddTutorialComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot(routes)  // Ajout des routes ici
+    FormsModule,               // ✅ Ajouté ici aussi
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
