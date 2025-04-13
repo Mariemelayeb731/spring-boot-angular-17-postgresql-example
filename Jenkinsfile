@@ -47,10 +47,13 @@ pipeline {
         stage('Tests End-to-End avec Cypress') {
             steps {
                 dir('angular-17-client') {
-                    sh 'npx cypress run'
+                     sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+}
+
+               
                 }
             }
-        }
+
 
         stage('Build Docker Images') {
             steps {
