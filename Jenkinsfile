@@ -45,13 +45,19 @@ pipeline {
  sh 'docker-compose -f docker-compose.test.yml down'
     }
 }
+
 stage('Tests End-to-End avec Cypress') {
     steps {
-        dir('angular-17-client') {
-            sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+        script {
+            // Assurez-vous que le répertoire Angular est correct
+            dir('angular-17-client') {
+                // Exécution des tests avec Cypress
+                sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+            }
         }
     }
 }
+
 
 
 
