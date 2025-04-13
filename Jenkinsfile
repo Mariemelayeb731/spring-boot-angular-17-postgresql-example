@@ -51,7 +51,8 @@ stage('Tests End-to-End avec Cypress') {
         script {
             // Assurez-vous que le répertoire Angular est correct
             dir('angular-17-client') {
-                sh 'npx wait-on http://localhost:4200'
+                sh 'npx wait-on http://localhost:4200 --timeout 60000'
+
                 // Exécution des tests avec Cypress
                 sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
             }
