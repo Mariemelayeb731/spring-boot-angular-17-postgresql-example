@@ -5,7 +5,7 @@ pipeline {
         stage('Cloner le projet') {
             steps {
                 git branch: 'master', 
-                url: 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
+                    url: 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
             }
         }
 
@@ -33,11 +33,11 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
                 sh 'docker-compose -f docker-compose.test.yml up -d'
-                sh 'sleep 30'  // Attend 30 secondes pour PostgreSQL
+                sh 'sleep 30'  // Attente pour laisser PostgreSQL démarrer
                 dir('spring-boot-server') {
                     sh 'mvn verify -P integration-tests'
                 }
@@ -49,13 +49,10 @@ pipeline {
             steps {
                 script {
                     dir('angular-17-client') {
-                        // Lancer un serveur local pour tester l’app Angular
-                        sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
-
-                        // Attendre que le serveur soit prêt
+                        // Modifier ici si le nom du dossier de build Angular est différent
+                        sh 'npx http-server ./dist/angular-17-client -p 4200 &'
                         sh 'npx wait-on http://localhost:4200 --timeout 60000'
-
-                        // Lancer les tests Cypress
+                        sh 'curl http://localhost:4200 || true'
                         sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
                     }
                 }
@@ -79,6 +76,13 @@ pipeline {
             steps {
                 sh 'docker-compose up -d'
             }
+        }
+    }
+
+    post {
+        always {
+            // Archive les captures d’écran de Cypress en cas d’échec
+            archiveArtifacts artifacts: 'angular-17-client/cypress/screenshots/**/*.png', fingerprint: true
         }
     }
 }
