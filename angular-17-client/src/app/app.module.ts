@@ -1,24 +1,30 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // Nécessaire pour ngModel
-import { HttpClientModule } from '@angular/common/http'; // Nécessaire pour TutorialService
-// Composants
 import { AppComponent } from './app.component';
 import { TutorialsListComponent } from './components/tutorials-list/tutorials-list.component';
 import { TutorialDetailsComponent } from './components/tutorial-details/tutorial-details.component';
+import { AddTutorialComponent } from './components/add-tutorial/add-tutorial.component';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
 
-import { RouterModule } from '@angular/router';
+const routes: Routes = [
+  { path: '', redirectTo: '/tutorials', pathMatch: 'full' },
+  { path: 'tutorials', component: TutorialsListComponent },
+  { path: 'add', component: AddTutorialComponent },
+  { path: 'tutorial-details/:id', component: TutorialDetailsComponent },
+];
+
 @NgModule({
   declarations: [
     AppComponent,
     TutorialsListComponent,
-    TutorialDetailsComponent // <-- Ajouter cette ligne
+    TutorialDetailsComponent, // Assurez-vous que ce composant est déclaré ici
+    AddTutorialComponent
   ],
   imports: [
-    RouterModule,
     BrowserModule,
-    FormsModule, // <-- Nécessaire pour les formulaires
-    HttpClientModule // <-- Nécessaire pour les appels HTTP
+    HttpClientModule,
+    RouterModule.forRoot(routes)  // Ajout des routes ici
   ],
   providers: [],
   bootstrap: [AppComponent]

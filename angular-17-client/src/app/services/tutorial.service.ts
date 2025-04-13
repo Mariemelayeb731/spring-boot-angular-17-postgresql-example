@@ -1,41 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tutorial } from '../models/tutorial.model';
-
-const baseUrl = 'http://localhost:8080/api/tutorials';
+import { Tutorial } from '../models/tutorial.model'; // adapte le chemin si besoin
 
 @Injectable({
   providedIn: 'root'
 })
 export class TutorialService {
+  private baseUrl = 'http://localhost:8080/api/tutorials';
+
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Tutorial[]> {
-    return this.http.get<Tutorial[]>(baseUrl);
+    return this.http.get<Tutorial[]>(this.baseUrl);
   }
 
-  get(id: number): Observable<Tutorial> {
-    return this.http.get<Tutorial>(`${baseUrl}/${id}`);
+  get(id: any): Observable<Tutorial> {
+    return this.http.get<Tutorial>(`${this.baseUrl}/${id}`);
   }
 
-  create(data: Tutorial): Observable<Tutorial> {
-    return this.http.post<Tutorial>(baseUrl, data);
+  create(data: any): Observable<any> {
+    return this.http.post(this.baseUrl, data);
   }
 
-  update(id: number, data: Tutorial): Observable<Tutorial> {
-    return this.http.put<Tutorial>(`${baseUrl}/${id}`, data);
+  update(id: any, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, data);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${baseUrl}/${id}`);
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
-  deleteAll(): Observable<void> {
-    return this.http.delete<void>(baseUrl);
+  deleteAll(): Observable<any> {
+    return this.http.delete(this.baseUrl);
   }
 
-  findByTitle(title: string): Observable<Tutorial[]> {
-    return this.http.get<Tutorial[]>(`${baseUrl}?title=${title}`);
+  findByTitle(title: any): Observable<Tutorial[]> {
+    return this.http.get<Tutorial[]>(`${this.baseUrl}?title=${title}`);
   }
 }

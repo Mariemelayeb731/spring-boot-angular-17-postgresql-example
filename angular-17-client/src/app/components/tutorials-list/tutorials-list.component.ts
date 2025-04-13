@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Tutorial } from '../../models/tutorial.model';
 import { TutorialService } from '../../services/tutorial.service';
+import { Tutorial } from '../../models/tutorial.model';
 
 @Component({
   selector: 'app-tutorials-list',
@@ -8,14 +8,11 @@ import { TutorialService } from '../../services/tutorial.service';
   styleUrls: ['./tutorials-list.component.css']
 })
 export class TutorialsListComponent implements OnInit {
-  tutorials?: Tutorial[];
-  currentTutorial: Tutorial = {
-    title: '',
-    description: '',
-    published: false
-  };
+  tutorials: Tutorial[] = [];
+  currentTutorial?: Tutorial; // ✅ Correction ici : plus de "null", maintenant c'est "undefined"
   currentIndex = -1;
   title = '';
+  errorMessage: string = '';
 
   constructor(private tutorialService: TutorialService) {}
 
@@ -24,12 +21,15 @@ export class TutorialsListComponent implements OnInit {
   }
 
   retrieveTutorials(): void {
-    this.tutorialService.getAll().subscribe({
-      next: (data) => {
+    this.tutorialService.getAll().subscribe(
+      data => {
         this.tutorials = data;
       },
-      error: (e) => console.error(e)
-    });
+      error => {
+        console.log(error);
+        this.errorMessage = 'Erreur lors du chargement des tutoriels.';
+      }
+    );
   }
 
   setActiveTutorial(tutorial: Tutorial, index: number): void {
@@ -37,35 +37,33 @@ export class TutorialsListComponent implements OnInit {
     this.currentIndex = index;
   }
 
+  removeAllTutorials(): void {
+    this.tutorialService.deleteAll().subscribe(
+      response => {
+        console.log(response);
+        this.retrieveTutorials();
+      },
+      error => {
+        console.log(error);
+        this.errorMessage = 'Erreur lors de la suppression des tutoriels.';
+      }
+    );
+  }
+
   searchTitle(): void {
-    this.tutorialService.findByTitle(this.title).subscribe({
-      next: (data) => {
+    this.tutorialService.findByTitle(this.title).subscribe(
+      data => {
         this.tutorials = data;
       },
-      error: (e) => console.error(e)
-    });
+      error => {
+        console.log(error);
+        this.errorMessage = 'Erreur lors de la recherche.';
+      }
+    );
   }
 
-  removeAllTutorials(): void {
-    this.tutorialService.deleteAll().subscribe({
-      next: (res) => {
-        this.tutorials = [];
-      },
-      error: (e) => console.error(e)
-    });
-  }
-
-  newTutorial(): void {
-    this.currentTutorial = {
-      title: '',
-      description: '',
-      published: false
-    };
-    this.currentIndex = -1;
-  }
-
-  // ✅ Méthode ajoutée pour corriger l'erreur de trackBy
-  trackById(index: number, tutorial: Tutorial): any {
-    return tutorial.id;
+  // ✅ Ajout de la méthode manquante : trackById
+  trackById(index: number, item: Tutorial): any {
+    return item.id;
   }
 }

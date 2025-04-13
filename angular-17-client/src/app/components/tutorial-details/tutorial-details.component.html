@@ -1,31 +1,6 @@
-<!-- Affichage en mode vue seulement -->
-<div *ngIf="viewMode">
-  <div *ngIf="currentTutorial.id; else noTutorialView">
-    <h4>Tutorial</h4>
-    <div>
-      <label><strong>Title:</strong></label> {{ currentTutorial.title }}
-    </div>
-    <div>
-      <label><strong>Description:</strong></label>
-      {{ currentTutorial.description }}
-    </div>
-    <div>
-      <label><strong>Status:</strong></label>
-      {{ currentTutorial.published ? 'Published' : 'Pending' }}
-    </div>
-
-    <a class="badge badge-warning" [routerLink]="['/tutorials', currentTutorial.id]">
-      Edit
-    </a>
-  </div>
-  <ng-template #noTutorialView>
-    <p>Please click on a Tutorial...</p>
-  </ng-template>
-</div>
-
-<!-- Mode édition -->
 <div *ngIf="!viewMode">
-  <div *ngIf="currentTutorial.id; else noAccess">
+  <!-- Vérification que currentTutorial est défini -->
+  <div *ngIf="currentTutorial; else noAccess">
     <div class="edit-form">
       <h4>Tutorial</h4>
       <form>
@@ -37,6 +12,8 @@
             id="title"
             [(ngModel)]="currentTutorial.title"
             name="title"
+            required
+            [readonly]="!currentTutorial"
           />
         </div>
 
@@ -48,6 +25,8 @@
             id="description"
             [(ngModel)]="currentTutorial.description"
             name="description"
+            required
+            [readonly]="!currentTutorial"
           />
         </div>
 
@@ -57,26 +36,34 @@
         </div>
       </form>
 
+      <!-- Boutons d'action avec des vérifications pour currentTutorial -->
       <button
         class="badge badge-primary mr-2"
-        (click)="updatePublished(!currentTutorial.published)">
+        (click)="updatePublished(!currentTutorial.published)"
+        [disabled]="!currentTutorial">
         {{ currentTutorial.published ? 'UnPublish' : 'Publish' }}
       </button>
 
-      <button class="badge badge-danger mr-2" (click)="deleteTutorial()">
+      <button
+        class="badge badge-danger mr-2"
+        (click)="deleteTutorial()"
+        [disabled]="!currentTutorial">
         Delete
       </button>
 
       <button
         type="submit"
         class="badge badge-success mb-2"
-        (click)="updateTutorial()">
+        (click)="updateTutorial()"
+        [disabled]="!currentTutorial || !currentTutorial.title || !currentTutorial.description">
         Update
       </button>
 
       <p>{{ message }}</p>
     </div>
   </div>
+
+  <!-- Template de fallback si currentTutorial n'est pas défini -->
   <ng-template #noAccess>
     <p>Cannot access this Tutorial...</p>
   </ng-template>

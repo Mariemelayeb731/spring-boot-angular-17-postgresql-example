@@ -1,23 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Tutorial } from '../../models/tutorial.model';
 import { TutorialService } from '../../services/tutorial.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tutorial-details',
   templateUrl: './tutorial-details.component.html',
-  styleUrls: ['./tutorial-details.component.css'],
+  styleUrls: ['./tutorial-details.component.css']
 })
-export class TutorialDetailsComponent implements OnInit {
-  @Input() viewMode: boolean = false;
-
-  @Input() currentTutorial: Tutorial = {
-    title: '',
-    description: '',
-    published: false
-  };
-
+export class TutorialDetailsComponent implements OnInit, OnDestroy {
+  @Input() viewMode = false;
+  @Input() currentTutorial?: Tutorial;
+  
+  tutorial?: Tutorial;
   message = '';
+  private routeSub?: Subscription;
 
   constructor(
     private tutorialService: TutorialService,
@@ -27,72 +25,75 @@ export class TutorialDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.viewMode) {
-      this.message = '';
-      const id = +this.route.snapshot.params['id']; // convert to number
-      this.getTutorial(id);
+      this.routeSub = this.route.params.subscribe(params => {
+        const id = +params['id'];
+        this.getTutorial(id);
+      });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
   }
 
   getTutorial(id: number): void {
     this.tutorialService.get(id).subscribe({
       next: (data) => {
-        this.currentTutorial = data;
-        console.log(data);
+        this.tutorial = data;
+        this.message = '';
       },
-      error: (e) => console.error(e)
+      error: (err) => {
+        console.error(err);
+        this.message = 'Erreur lors du chargement du tutoriel';
+      }
     });
   }
 
   updatePublished(status: boolean): void {
-    if (this.currentTutorial.id === undefined) return;
+    if (!this.tutorial?.id) return;
 
-    const data = {
-      title: this.currentTutorial.title,
-      description: this.currentTutorial.description,
-      published: status
+    const updateData = { 
+      ...this.tutorial, 
+      published: status 
     };
 
-    this.message = '';
-
-    this.tutorialService.update(this.currentTutorial.id, data).subscribe({
+    this.tutorialService.update(this.tutorial.id, updateData).subscribe({
       next: (res) => {
-        console.log(res);
-        this.currentTutorial.published = status;
-        this.message = (res as any).message
-          ? (res as any).message
-          : 'The status was updated successfully!';
+        this.tutorial!.published = status;
+        this.message = 'Statut mis à jour avec succès';
       },
-      error: (e) => console.error(e)
+      error: (err) => {
+        console.error(err);
+        this.message = 'Erreur de mise à jour';
+      }
     });
   }
 
   updateTutorial(): void {
-    if (this.currentTutorial.id === undefined) return;
+    if (!this.tutorial?.id) return;
 
-    this.message = '';
-
-    this.tutorialService
-      .update(this.currentTutorial.id, this.currentTutorial)
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          this.message = (res as any).message
-            ? (res as any).message
-            : 'This tutorial was updated successfully!';
-        },
-        error: (e) => console.error(e)
-      });
+    this.tutorialService.update(this.tutorial.id, this.tutorial).subscribe({
+      next: (res) => {
+        this.message = 'Tutoriel modifié avec succès';
+      },
+      error: (err) => {
+        console.error(err);
+        this.message = 'Erreur de modification';
+      }
+    });
   }
 
   deleteTutorial(): void {
-    if (this.currentTutorial.id === undefined) return;
+    if (!this.tutorial?.id) return;
 
-    this.tutorialService.delete(this.currentTutorial.id).subscribe({
+    this.tutorialService.delete(this.tutorial.id).subscribe({
       next: (res) => {
-        console.log(res);
         this.router.navigate(['/tutorials']);
       },
-      error: (e) => console.error(e)
+      error: (err) => {
+        console.error(err);
+        this.message = 'Erreur de suppression';
+      }
     });
   }
 }
