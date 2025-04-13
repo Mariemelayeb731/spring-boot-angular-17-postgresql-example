@@ -37,8 +37,11 @@ pipeline {
     steps {
         sh 'docker-compose -f docker-compose.test.yml up -d'
         sh 'sleep 30'  // Attend 30 secondes pour s'assurer que PostgreSQL est prêt
-        sh 'mvn verify -P integration-tests'
-        sh 'docker-compose -f docker-compose.test.yml down'
+        dir('spring-boot-server') {
+            sh 'mvn verify -P integration-tests'
+}
+
+ sh 'docker-compose -f docker-compose.test.yml down'
     }
 }
         stage('Tests End-to-End avec Cypress') {
