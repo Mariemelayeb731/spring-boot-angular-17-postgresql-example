@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_USER: bezkoder
       POSTGRES_PASSWORD: bez123
-      POSTGRES_DB: ezkoder_db
+      POSTGRES_DB: bezkoder_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
