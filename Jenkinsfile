@@ -14,6 +14,7 @@ pipeline {
                 dir('angular-17-client') {
                     sh 'npm install'
                     sh 'npm run build'
+                    sh 'npm run build -- --configuration=production'
                 }
             }
         }
@@ -36,8 +37,9 @@ pipeline {
         stage('Tests unitaires Frontend') {
             steps {
                 dir('angular-17-client') {
-                    sh 'npm install'
-                    sh 'ng test --watch=false --no-progress --browsers=ChromeHeadless || true'
+                     sh 'npx http-server ./dist/angular-17-client -p 4200 &'
+                     sh 'npx wait-on http://localhost:4200 --timeout 60000'
+                     sh 'npx cypress run'
                 }
             }
         }
