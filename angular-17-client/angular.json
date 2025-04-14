@@ -15,7 +15,6 @@
         "@schematics/angular:pipe": {
           "standalone": false
         }
-        
       },
       "root": "",
       "sourceRoot": "src",
@@ -40,19 +39,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.slim.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
-             
-              "node_modules/jquery/dist/jquery.min.js", // Cheval de base
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-             
-              "node_modules/popper.js/dist/umd/popper.min.js", // Chemin correct
-  "node_modules/bootstrap/dist/js/bootstrap.min.js"
-
-  "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" // Contient déjà Popper
-  "node_modules/popper.js/dist/umd/popper.min.js"
-
             ]
           },
           "configurations": {
@@ -63,7 +50,6 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 },
-  
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
@@ -120,6 +106,6 @@
     }
   },
   "cli": {
-    "analytics": "ee303499-e01d-4a8e-8584-0a2f03f0622c"
+    "analytics": false
   }
 }

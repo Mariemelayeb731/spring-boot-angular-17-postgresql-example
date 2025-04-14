@@ -28,11 +28,11 @@ spec:
           image: postgres:15
           env:
             - name: POSTGRES_DB
-              value: your_db
+              value: bezkoder_db
             - name: POSTGRES_USER
-              value: your_user
+              value: bezkoder
             - name: POSTGRES_PASSWORD
-              value: your_password
+              value: bez123
           ports:
             - containerPort: 5432
           volumeMounts:

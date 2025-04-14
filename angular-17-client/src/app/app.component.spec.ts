@@ -20,26 +20,26 @@ describe('AppComponent', () => {
         AddTutorialComponent,
         TutorialDetailsComponent
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA] // Pour ignorer les composants inconnus
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Ignorer les composants inconnus (personnalisés)
     }).compileComponents();
   });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(app).toBeTruthy();  // Vérifie que l'instance de l'application a bien été créée
   });
 
   it(`should have as title 'angular-17-crud'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-17-crud');
+    expect(app.title).toEqual('angular-17-crud');  // Vérifie que la propriété title est définie correctement
   });
 
-  it('should render title', () => {
+  it('should render title in h1 tag', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+    fixture.detectChanges();  // Déclenche la détection de changements
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('angular-17-crud');
+    expect(compiled.querySelector('h1')?.textContent).toContain('angular-17-crud');  // Vérifie que l'élément <h1> contient le texte du titre
   });
 });

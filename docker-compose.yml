@@ -8,7 +8,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"  # Port modifié pour éviter les conflits
+      - "5434:5432"  # Port modifié pour éviter les conflits
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U bezkoder -d ezkoder_db"]
       interval: 5s

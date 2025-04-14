@@ -14,16 +14,16 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ton-nom-utilisateur/backend:latest
+          image: spring-boot-server:latest
           ports:
             - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgres-service:5432/your_db
+              value: jdbc:postgresql://postgres-service:5432/bezkoder_db
             - name: SPRING_DATASOURCE_USERNAME
-              value: your_user
+              value: bezkoder
             - name: SPRING_DATASOURCE_PASSWORD
-              value: your_password
+              value: bez123
 ---
 apiVersion: v1
 kind: Service
