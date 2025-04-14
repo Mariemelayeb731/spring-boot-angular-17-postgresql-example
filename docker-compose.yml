@@ -22,7 +22,7 @@ services:
       context: ./spring-boot-server
       dockerfile: Dockerfile
     ports:
-      - "8082:8080"
+      - "8083:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ezkoder_db
       SPRING_DATASOURCE_USERNAME: bezkoder
