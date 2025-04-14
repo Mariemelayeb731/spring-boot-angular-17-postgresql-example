@@ -26,23 +26,18 @@ pipeline {
             }
         }
 
-       stage('Tests unitaires Frontend') {
+        stage('Tests Unitaires Spring Boot') {
+            steps {
+                dir('spring-boot-server') {
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage('Tests unitaires Frontend') {
             steps {
                 dir('angular-17-client') {
                     sh 'npm install'
                     sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
-                }
-            }
-        }
-
-        stage('Tests Angular (CHROME_BIN)') {
-            steps {
-                dir('angular-17-client') {
-                    script {
-                        // Set the CHROME_BIN environment variable if not already set
-                        sh 'export CHROME_BIN=/usr/bin/chromium-browser'  // Adjust this path if needed
-                        sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
-                    }
                 }
             }
         }
