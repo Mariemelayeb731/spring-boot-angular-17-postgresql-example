@@ -34,6 +34,7 @@ pipeline {
                 }
             }
         }
+
         stage('Tests unitaires Frontend') {
             steps {
                 dir('angular-17-client') {
@@ -53,17 +54,25 @@ pipeline {
                 sh 'docker-compose -f docker-compose.test.yml down'
             }
         }
-        
 
         stage('Tests End-to-End avec Cypress') {
             steps {
                 script {
                     dir('angular-17-client') {
-                        // Modifier ici si le nom du dossier de build Angular est différent
-                        sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
+                        // Lancer http-server en arrière-plan sans le bloquer
+                        sh 'nohup npx http-server ./dist/angular-17-crud -p 4200 > http-server.log 2>&1 &'
+
+                        // Attendre que le serveur soit disponible
                         sh 'npx wait-on http://localhost:4200 --timeout 60000'
+
+                        // Vérifier l'accès à l'application
                         sh 'curl http://localhost:4200 || true'
+
+                        // Lancer les tests Cypress
                         sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+
+                        // Optionnel : tuer http-server après les tests
+                        sh "pkill -f 'http-server.*4200' || true"
                     }
                 }
             }
