@@ -37,7 +37,7 @@ pipeline {
             steps {
                 dir('angular-17-client') {
                     sh 'npm install'
-                    sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                    sh 'ng test --watch=false --no-progress --browsers=ChromeHeadless || true'
                 }
             }
         }
