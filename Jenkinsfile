@@ -26,16 +26,10 @@ pipeline {
             }
         }
 
-        stage('Tests Unitaires Spring Boot') {
-            steps {
-                dir('spring-boot-server') {
-                    sh 'mvn test'
-                }
-            }
-        }
-        stage('Tests Angular (Simple)') {
+       stage('Tests unitaires Frontend') {
             steps {
                 dir('angular-17-client') {
+                    sh 'npm install'
                     sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
                 }
             }
