@@ -10,7 +10,7 @@ services:
     ports:
       - "5434:5432"  # Port modifié pour éviter les conflits
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U bezkoder -d ezkoder_db"]
+      test: ["CMD-SHELL", "pg_isready -U bezkoder -d bezkoder_db"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -24,7 +24,7 @@ services:
     ports:
       - "8083:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ezkoder_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bezkoder_db
       SPRING_DATASOURCE_USERNAME: bezkoder
       SPRING_DATASOURCE_PASSWORD: bez123
       SPRING_JPA_HIBERNATE_DDL-AUTO: update

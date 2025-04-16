@@ -10,5 +10,7 @@ export class Tutorial {
       this.published = published;
       this.id = id;
     }
+    
   }
+
   

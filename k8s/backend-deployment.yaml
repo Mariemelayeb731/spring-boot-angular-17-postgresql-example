@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: spring-boot-server:latest
+          image: ci-cd-project-spring-boot:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:

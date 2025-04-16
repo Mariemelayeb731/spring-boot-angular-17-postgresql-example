@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: angular-17-client:latest
+          image: ci-cd-project-angular:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
 ---
@@ -23,7 +24,8 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
-  type: LoadBalancer
+  type: NodePort
+
   selector:
     app: frontend
   ports:

@@ -14,6 +14,7 @@ pipeline {
                 dir('angular-17-client') {
                     sh 'npm install'
                     sh 'npm run build'
+                    sh 'npm run build -- --configuration=production'
                 }
             }
         }
@@ -58,9 +59,10 @@ pipeline {
             steps {
                 script {
                     dir('angular-17-client') {
-                        // Modifier ici si le nom du dossier de build Angular est différent
-                        sh 'npx http-server ./dist/angular-17-client -p 4200 &'
-                        sh 'npx wait-on http://localhost:4200 --timeout 60000'
+                        
+                       sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
+                       sh 'npx wait-on http://localhost:4200 --timeout 60000'
+
                         sh 'curl http://localhost:4200 || true'
                         sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
                     }
