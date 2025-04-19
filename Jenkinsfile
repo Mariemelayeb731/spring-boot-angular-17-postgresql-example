@@ -27,6 +27,49 @@ pipeline {
             }
         }
 
+        stage('Tests Unitaires Spring Boot') {
+            steps {
+                dir('spring-boot-server') {
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage('Tests unitaires Frontend') {
+            steps {
+                dir('angular-17-client') {
+                    sh 'npm install'
+                    sh 'ng test --watch=false --no-progress --browsers=ChromeHeadless || true'
+                }
+            }
+        }
+
+        stage('Tests d\'intégration avec PostgreSQL') {
+            steps {
+                sh 'docker-compose -f docker-compose.test.yml up -d'
+                sh 'sleep 30'  // Attente pour laisser PostgreSQL démarrer
+                dir('spring-boot-server') {
+                    sh 'mvn verify -P integration-tests'
+                }
+                sh 'docker-compose -f docker-compose.test.yml down'
+            }
+        }
+        
+
+        stage('Tests End-to-End avec Cypress') {
+            steps {
+                script {
+                    dir('angular-17-client') {
+                        
+                       sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
+                       sh 'npx wait-on http://localhost:4200 --timeout 60000'
+
+                        sh 'curl http://localhost:4200 || true'
+                        sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+                    }
+                }
+            }
+        }
+
         stage('Build Docker Images') {
             steps {
                 script {
