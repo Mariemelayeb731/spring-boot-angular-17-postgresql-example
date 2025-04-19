@@ -1,0 +1,6 @@
+# .gitignore
+minikube-linux-amd64
+*.zip
+*.tar.gz
+*.jar
+*.log
