@@ -12,7 +12,7 @@ services:
     ports:
       - "5433:5432"  # Changé de 5432 -> 5433 (host)
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U bezkoder -d bezkoder_db -h localhost"]
+      test: ["CMD-SHELL", "pg_isready -U bezkoder -d bezkoder_db -h postgres"]
       interval: 3s
       timeout: 5s
       retries: 15
@@ -34,6 +34,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
     networks:
       - app_net
 
