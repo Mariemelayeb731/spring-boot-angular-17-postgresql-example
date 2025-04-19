@@ -1,0 +1,8 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "origin"]
+	url = https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git
+	fetch = +refs/*:refs/*
+	mirror = true
