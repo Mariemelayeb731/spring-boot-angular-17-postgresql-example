@@ -24,7 +24,7 @@ services:
       context: ./spring-boot-server
       dockerfile: Dockerfile
     ports:
-      - "8083:8080"
+      - "8084:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bezkoder_db
       SPRING_DATASOURCE_USERNAME: bezkoder
@@ -48,7 +48,7 @@ services:
       context: ./angular-17-client
       dockerfile: Dockerfile
     ports:
-      - "4202:80"
+      - "4203:80"
     depends_on:
       spring-boot:
         condition: service_healthy
