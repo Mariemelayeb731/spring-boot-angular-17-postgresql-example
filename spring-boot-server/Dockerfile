@@ -7,9 +7,7 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 # Étape 3: Ajouter le fichier JAR de l'application
 COPY target/*.jar /app.jar
 
-# Étape 4: Ajouter le script wait-for-it.sh pour attendre PostgreSQL
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+#
 
 # Étape 5: Exposer le port que l'application va utiliser
 EXPOSE 8080
