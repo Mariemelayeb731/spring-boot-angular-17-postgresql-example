@@ -1,26 +1,30 @@
-pipeline { 
+pipeline {
     agent any
 
     environment {
-        SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5432/bezkoder_db'
+        SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5434/bezkoder_db'
         SPRING_DATASOURCE_USERNAME = 'bezkoder'
-        SPRING_DATASOURCE_PASSWORD = 'bez123'
+        SPRING_DATASOURCE_PASSWORD = 'bezkoder'
     }
 
     stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Cloner le projet') {
             steps {
-                git branch: 'master', 
-                    url: 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
+                git url: 'https://gitlab.com/maryem.benhajjem/ci-cd-project.git'
             }
         }
 
         stage('Build Angular') {
             steps {
-                dir('angular-17-client') {
+                dir('angular-client') {
                     sh 'npm install'
-                    sh 'npm run build'
-                    sh 'npm run build -- --configuration=production'
+                    sh 'npm run build --prod'
                 }
             }
         }
@@ -28,7 +32,7 @@ pipeline {
         stage('Build Spring Boot') {
             steps {
                 dir('spring-boot-server') {
-                    sh 'mvn clean package -DskipTests'
+                    sh 'mvn clean install -DskipTests'
                 }
             }
         }
@@ -43,75 +47,63 @@ pipeline {
 
         stage('Tests unitaires Frontend') {
             steps {
-                dir('angular-17-client') {
-                    sh 'npm install'
-                    sh 'ng test --watch=false --no-progress --browsers=ChromeHeadless || true'
+                dir('angular-client') {
+                    sh 'npm run test-headless'
                 }
             }
         }
 
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
-                // Lancer les services Docker de test
+                // Démarrer les conteneurs avec docker-compose.test.yml
                 sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
 
-                // Vérifier que PostgreSQL est prêt depuis le conteneur
+                // Attendre que PostgreSQL dans le conteneur soit prêt
                 sh '''
                     i=0
                     until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
-                      echo "Waiting for PostgreSQL... ($i)"
+                      echo "Waiting for PostgreSQL to be ready... ($i)"
                       sleep 2
                       i=$((i+1))
                     done
                 '''
 
-                // Lancer les tests d'intégration
+                // Exécuter les tests d'intégration avec le bon profil Maven
                 dir('spring-boot-server') {
-                    sh 'mvn verify -P integration-tests'
+                    sh 'mvn verify -P integration-tests -X'
                 }
 
-                // Nettoyage des conteneurs
+                // Nettoyer les conteneurs
                 sh 'docker-compose -f docker-compose.test.yml down'
             }
         }
 
         stage('Tests End-to-End avec Cypress') {
             steps {
-                script {
-                    dir('angular-17-client') {
-                        sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
-                        sh 'npx wait-on http://localhost:4200 --timeout 60000'
-                        sh 'curl http://localhost:4200 || true'
-                        sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
-                    }
+                dir('angular-client') {
+                    sh 'npx cypress run'
                 }
             }
         }
 
         stage('Build Docker Images') {
             steps {
-                script {
-                    dir('spring-boot-server') {
-                        sh 'docker build -t spring-boot-server .'
-                    }
-                    dir('angular-17-client') {
-                        sh 'docker build -t angular-17-client .'
-                    }
-                }
+                sh 'docker-compose -f docker-compose.yml build'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose build --no-cache'
-                sh 'docker-compose up -d'
+                sh 'docker-compose -f docker-compose.yml up -d'
             }
         }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'angular-17-client/cypress/screenshots/**/*.png', fingerprint: true
+            echo 'Nettoyage des ressources...'
+            sh 'docker-compose -f docker-compose.test.yml down || true'
+            sh 'docker-compose -f docker-compose.yml down || true'
         }
     }
 }
