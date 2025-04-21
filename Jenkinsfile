@@ -86,8 +86,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose up -d --no-cache'
-               
+                sh'docker-compose build --no-cache'
+                sh'docker-compose up -d'
 
             }
         }
