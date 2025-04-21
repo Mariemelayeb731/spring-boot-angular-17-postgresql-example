@@ -24,7 +24,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: bez123
     depends_on:
       - postgres
-    entrypoint: ["./wait-for-it.sh", "postgres:5432", "--", "java", "-jar", "/app/springboot.jar"]
+    entrypoint: ["java", "-jar", "/app.jar"]
     networks:
       - test-net
 
