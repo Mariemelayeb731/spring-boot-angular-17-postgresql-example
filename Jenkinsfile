@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Configuration de la connexion PostgreSQL pour Jenkins
-        SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5433/bezkoder_db'
+        SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5432/bezkoder_db'
         SPRING_DATASOURCE_USERNAME = 'bezkoder'
         SPRING_DATASOURCE_PASSWORD = 'bez123'
     }
