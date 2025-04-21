@@ -7,10 +7,9 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 # Étape 3: Ajouter le fichier JAR de l'application
 COPY target/*.jar /app.jar
 
-#
 
 # Étape 5: Exposer le port que l'application va utiliser
 EXPOSE 8080
 
 # Étape 6: Commande pour démarrer l'application après avoir attendu PostgreSQL
-ENTRYPOINT ["/wait-for-it.sh", "postgres:5432", "--", "java", "-jar", "/app.jar"]
+ENTRYPOINT [ "postgres:5432", "--", "java", "-jar", "/app.jar"]
