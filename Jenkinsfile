@@ -45,7 +45,8 @@ pipeline {
 
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
-                sh 'docker-compose -f docker-compose.test.yml up -d'
+                sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
+
                 sh 'sleep 30'  // Attente pour laisser PostgreSQL démarrer
                 dir('spring-boot-server') {
                     sh 'mvn verify -P integration-tests'
