@@ -1,6 +1,13 @@
 pipeline { 
     agent any
 
+    environment {
+        // Configuration de la connexion PostgreSQL pour Jenkins
+        SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5433/bezkoder_db'
+        SPRING_DATASOURCE_USERNAME = 'bezkoder'
+        SPRING_DATASOURCE_PASSWORD = 'bez123'
+    }
+
     stages {
         stage('Cloner le projet') {
             steps {
@@ -34,6 +41,7 @@ pipeline {
                 }
             }
         }
+
         stage('Tests unitaires Frontend') {
             steps {
                 dir('angular-17-client') {
@@ -47,22 +55,24 @@ pipeline {
             steps {
                 sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
 
-                sh 'sleep 30'  // Attente pour laisser PostgreSQL démarrer
+                // Vérification que PostgreSQL est prêt
+                sh 'until pg_isready -h localhost -p 5433 -U bezkoder; do echo "Waiting for PostgreSQL..."; sleep 2; done'
+
+                // Lancer les tests d'intégration
                 dir('spring-boot-server') {
                     sh 'mvn verify -P integration-tests'
                 }
+                
                 sh 'docker-compose -f docker-compose.test.yml down'
             }
         }
-        
 
         stage('Tests End-to-End avec Cypress') {
             steps {
                 script {
                     dir('angular-17-client') {
-                        
-                       sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
-                       sh 'npx wait-on http://localhost:4200 --timeout 60000'
+                        sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
+                        sh 'npx wait-on http://localhost:4200 --timeout 60000'
 
                         sh 'curl http://localhost:4200 || true'
                         sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
@@ -86,9 +96,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh'docker-compose build --no-cache'
-                sh'docker-compose up -d'
-
+                sh 'docker-compose build --no-cache'
+                sh 'docker-compose up -d'
             }
         }
     }
