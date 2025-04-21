@@ -4,7 +4,7 @@ pipeline {
     environment {
         SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5434/bezkoder_db'
         SPRING_DATASOURCE_USERNAME = 'bezkoder'
-        SPRING_DATASOURCE_PASSWORD = 'bezkoder'
+        SPRING_DATASOURCE_PASSWORD = 'bez123'
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
 
         stage('Cloner le projet') {
             steps {
-                git url: 'https://gitlab.com/maryem.benhajjem/ci-cd-project.git'
+                git url: 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
             }
         }
 
