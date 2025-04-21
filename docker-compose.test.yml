@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:13
@@ -7,11 +9,16 @@ services:
       POSTGRES_USER: bezkoder
       POSTGRES_PASSWORD: bez123
     ports:
-      - "5432:5432"
+      - "5433:5432"  # Port hôte modifié
     volumes:
       - postgres-test-data:/var/lib/postgresql/data
     networks:
       - test-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bezkoder -d bezkoder_db"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
 
   springboot:
     build:
@@ -19,14 +26,19 @@ services:
       dockerfile: Dockerfile
     container_name: test-springboot
     environment:
+      SPRING_PROFILES_ACTIVE: test
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bezkoder_db
-      SPRING_DATASOURCE_USERNAME: bezkoder
-      SPRING_DATASOURCE_PASSWORD: bez123
     depends_on:
-      - postgres
-    entrypoint: ["java", "-jar", "/app.jar"]
+      postgres:
+        condition: service_healthy
     networks:
       - test-net
+    entrypoint: ["sh", "-c", "java -jar /app.jar"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres-test-data:

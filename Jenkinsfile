@@ -1,12 +1,6 @@
 pipeline { 
     agent any
 
-    environment {
-        SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5432/bezkoder_db'
-        SPRING_DATASOURCE_USERNAME = 'bezkoder'
-        SPRING_DATASOURCE_PASSWORD = 'bez123'
-    }
-
     stages {
         stage('Cloner le projet') {
             steps {
@@ -19,7 +13,6 @@ pipeline {
             steps {
                 dir('angular-17-client') {
                     sh 'npm install'
-                    sh 'npm run build'
                     sh 'npm run build -- --configuration=production'
                 }
             }
@@ -51,52 +44,44 @@ pipeline {
         }
 
         stage('Tests d\'intégration avec PostgreSQL') {
-            steps {
-                // Lancer les services Docker de test
-                sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
+    steps {
+        sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
+        
+        // Attente simplifiée grâce au healthcheck
+        sleep(time: 15, unit: 'SECONDS') 
 
-                // Vérifier que PostgreSQL est prêt depuis le conteneur
-                sh '''
-                    i=0
-                    until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
-                      echo "Waiting for PostgreSQL... ($i)"
-                      sleep 2
-                      i=$((i+1))
-                    done
-                '''
+        dir('spring-boot-server') {
+            sh 'mvn verify -P integration-tests -Dspring.datasource.url=jdbc:postgresql://postgres:5432/bezkoder_db'
+        }
 
-                // Lancer les tests d'intégration
-                dir('spring-boot-server') {
-                    sh 'mvn verify -P integration-tests'
-                }
-
-                // Nettoyage des conteneurs
-                sh 'docker-compose -f docker-compose.test.yml down'
+        post {
+            always {
+                sh 'docker-compose -f docker-compose.test.yml logs springboot > springboot.log'
+                sh 'docker-compose -f docker-compose.test.yml down -v'
+                archiveArtifacts artifacts: 'springboot.log', fingerprint: true
             }
         }
+    }
+}
 
         stage('Tests End-to-End avec Cypress') {
             steps {
-                script {
-                    dir('angular-17-client') {
-                        sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
-                        sh 'npx wait-on http://localhost:4200 --timeout 60000'
-                        sh 'curl http://localhost:4200 || true'
-                        sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
-                    }
+                dir('angular-17-client') {
+                    sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
+                    sh 'npx wait-on http://localhost:4200 --timeout 60000'
+                    sh 'curl http://localhost:4200 || true'
+                    sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
                 }
             }
         }
 
         stage('Build Docker Images') {
             steps {
-                script {
-                    dir('spring-boot-server') {
-                        sh 'docker build -t spring-boot-server .'
-                    }
-                    dir('angular-17-client') {
-                        sh 'docker build -t angular-17-client .'
-                    }
+                dir('spring-boot-server') {
+                    sh 'docker build -t spring-boot-server .'
+                }
+                dir('angular-17-client') {
+                    sh 'docker build -t angular-17-client .'
                 }
             }
         }
