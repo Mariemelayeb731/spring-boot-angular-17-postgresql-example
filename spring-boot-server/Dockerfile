@@ -1,15 +1,14 @@
-# Étape 1: Utiliser une image de base de Java
-FROM openjdk:17-jdk-slim as build
+# Étape 1 : Image de base Java
+FROM openjdk:17-jdk-slim
 
-# Étape 2: Installer curl (pour le healthcheck)
+# Étape 2 : Installer curl pour les healthchecks
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Étape 3: Ajouter le fichier JAR de l'application
+# Étape 3 : Copier le fichier .jar de l'application
 COPY target/*.jar /app.jar
 
-
-# Étape 5: Exposer le port que l'application va utiliser
+# Étape 4 : Exposer le port
 EXPOSE 8080
 
-# Étape 6: Commande pour démarrer l'application après avoir attendu PostgreSQL
-ENTRYPOINT [ "postgres:5432", "--", "java", "-jar", "/app.jar"]
+# Étape 5 : Démarrer l'application directement
+ENTRYPOINT ["java", "-jar", "/app.jar"]
