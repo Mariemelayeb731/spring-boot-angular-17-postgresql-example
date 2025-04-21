@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Configuration de la connexion PostgreSQL pour Jenkins
         SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5432/bezkoder_db'
         SPRING_DATASOURCE_USERNAME = 'bezkoder'
         SPRING_DATASOURCE_PASSWORD = 'bez123'
@@ -53,16 +52,25 @@ pipeline {
 
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
+                // Lancer les services Docker de test
                 sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
 
-                // Vérification que PostgreSQL est prêt
-                sh 'until pg_isready -h localhost -p 5433 -U bezkoder; do echo "Waiting for PostgreSQL..."; sleep 2; done'
+                // Vérifier que PostgreSQL est prêt depuis le conteneur
+                sh '''
+                    i=0
+                    until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
+                      echo "Waiting for PostgreSQL... ($i)"
+                      sleep 2
+                      i=$((i+1))
+                    done
+                '''
 
                 // Lancer les tests d'intégration
                 dir('spring-boot-server') {
                     sh 'mvn verify -P integration-tests'
                 }
-                
+
+                // Nettoyage des conteneurs
                 sh 'docker-compose -f docker-compose.test.yml down'
             }
         }
@@ -73,7 +81,6 @@ pipeline {
                     dir('angular-17-client') {
                         sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
                         sh 'npx wait-on http://localhost:4200 --timeout 60000'
-
                         sh 'curl http://localhost:4200 || true'
                         sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
                     }
@@ -104,7 +111,6 @@ pipeline {
 
     post {
         always {
-            // Archive les captures d’écran de Cypress en cas d’échec
             archiveArtifacts artifacts: 'angular-17-client/cypress/screenshots/**/*.png', fingerprint: true
         }
     }
