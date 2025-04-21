@@ -3,7 +3,6 @@ version: '3.8'
 services:
   postgres:
     image: postgres:13
-    container_name: test-postgres
     environment:
       POSTGRES_DB: bezkoder_db
       POSTGRES_USER: bezkoder
@@ -24,7 +23,6 @@ services:
     build:
       context: ./spring-boot-server
       dockerfile: Dockerfile
-    container_name: test-springboot
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bezkoder_db
