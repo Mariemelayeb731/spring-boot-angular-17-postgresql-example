@@ -36,20 +36,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>3.1.0</version>
         </dependency>
-             <plugins>
-  <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-surefire-plugin</artifactId>
-    <version>3.0.0-M7</version>
-    <configuration>
-      <redirectTestOutputToFile>false</redirectTestOutputToFile>
-      <forkCount>0</forkCount>
-      <reuseForks>false</reuseForks>
-    </configuration>
-  </plugin>
-</plugins>
-
 
         <!-- Database -->
         <dependency>
@@ -86,6 +74,10 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.9.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -144,5 +136,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
