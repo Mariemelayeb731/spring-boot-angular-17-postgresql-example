@@ -22,7 +22,7 @@ RUN npm run build -- --configuration=production --project=angular-17-crud
 FROM nginx:alpine
 
 # Étape 8: Copier les fichiers du build dans le dossier Nginx
-COPY --from=build /app/dist/ /usr/share/nginx/html
+COPY ./dist/angular-17-crud /usr/share/nginx/html
 
 # Étape 9: (Optionnel) Remplacer le fichier de config Nginx si besoin
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
