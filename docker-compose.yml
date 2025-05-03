@@ -54,31 +54,6 @@ services:
         condition: service_healthy
     networks:
       - app_net
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    ports:
-      - "9091:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    restart: always
-    networks:
-      - app_net
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3001:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin # Mot de passe admin de Grafana
-    volumes:
-      - grafana-storage:/var/lib/grafana
-    restart: always
-    networks:
-      - app_net
-
   nginx:
     image: nginx:alpine
     ports:
