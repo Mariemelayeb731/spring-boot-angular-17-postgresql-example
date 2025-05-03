@@ -7,7 +7,8 @@ import { Tutorial } from '../models/tutorial.model'; // adapte le chemin si beso
   providedIn: 'root'
 })
 export class TutorialService {
-  private baseUrl = 'http://localhost:8080/api/tutorials';
+  private baseUrl = 'http://ci-cd-project2-spring-boot:8080/api/tutorials';
+
 
   constructor(private http: HttpClient) {}
 
