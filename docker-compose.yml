@@ -10,7 +10,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"  # Changé de 5432 -> 5433 (host)
+      - "5433:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U bezkoder -d bezkoder_db"]
       interval: 5s
@@ -24,7 +24,7 @@ services:
       context: ./spring-boot-server
       dockerfile: Dockerfile
     ports:
-      - "8084:8080"  # Changé de 8083 -> 8084 (host)
+      - "8084:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bezkoder_db
       SPRING_DATASOURCE_USERNAME: bezkoder
@@ -48,16 +48,43 @@ services:
       context: ./angular-17-client
       dockerfile: Dockerfile
     ports:
-      - "4203:80"  # Changé de 4202 -> 4203 (host)
+      - "4203:80"
     depends_on:
       spring-boot:
         condition: service_healthy
     networks:
       - app_net
+
+  prometheus:
+    image: prom/prometheus:v2.46.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/tmp:/prometheus
+      - ./prometheus/config:/etc/prometheus
+    command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
+
+  grafana:
+    image: grafana/grafana:10.0.3
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/tmp:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+
+  alertmanager:
+    image: prom/alertmanager:v0.25.0
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alert-manager/tmp:/data
+      - ./alert-manager/config:/config
+    command: --config.file=/config/alertmanager.yml --log.level=debug
+
   nginx:
     image: nginx:alpine
     ports:
-      - "81:80"  # Changé de 80 -> 81 (host)
+      - "81:80"
     volumes:
       - ./angular-17-client/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
@@ -72,7 +99,7 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin
     ports:
-      - "5051:80"  # Changé de 5050 -> 5051 (host)
+      - "5051:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@dev.local
       PGADMIN_DEFAULT_PASSWORD: admin123
