@@ -95,7 +95,7 @@ pipeline {
                         sh 'docker build -t spring-boot-server .'
                     }
                     dir('angular-17-client') {
-                        sh 'DOCKER_BUILDKIT=0 docker build -t angular-17-client .'
+                        sh 'docker build -t angular-17-client .'
                     }
                 }
             }
