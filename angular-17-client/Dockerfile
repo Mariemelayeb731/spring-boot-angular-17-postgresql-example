@@ -1,17 +1,30 @@
-# syntax=docker/dockerfile:1.6
-FROM node:20-alpine AS builder
+
+# Étape 1 : Construire l'application Angular
+FROM node:18 AS build
+
+# Définir le répertoire de travail
 WORKDIR /app
 
-# Installer les outils de build essentiels
-RUN apk add --no-cache python3 make g++
-
+# Copier le fichier package.json et package-lock.json
 COPY package.json package-lock.json ./
-RUN npm ci --no-audit --prefer-offline
 
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste des fichiers de l'application
 COPY . .
-RUN npm run build
 
-# Image finale
-FROM nginx:1.25-alpine
-COPY --from=builder /app/dist/angular-17-crud /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Construire l'application Angular pour la production
+RUN npm run build --prod
+
+# Étape 2 : Créer l'image de production
+FROM nginx:alpine
+
+# Copier les fichiers générés par la commande build dans le répertoire par défaut de nginx
+COPY --from=build /app/dist/angular-17-crud /usr/share/nginx/html
+
+# Exposer le port 80
+EXPOSE 80
+
+# Démarrer nginx
+CMD ["nginx", "-g", "daemon off;"]
