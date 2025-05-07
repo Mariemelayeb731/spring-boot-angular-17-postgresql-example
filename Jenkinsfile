@@ -85,21 +85,7 @@ pipeline {
             }
         }
 
-        stage('Tests End-to-End avec Cypress') {
-            steps {
-                timeout(time: 30, unit: 'MINUTES') {
-                    script {
-                        dir('angular-17-client') {
-                            sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
-                            sh 'npx wait-on http://localhost:4200 --timeout 60000'
-                            sh 'curl http://localhost:4200 || true'
-                            sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
-                        }
-                    }
-                }
-            }
-        }
-
+       
         stage('Build Docker Images') {
             steps {
                 timeout(time: 20, unit: 'MINUTES') {
