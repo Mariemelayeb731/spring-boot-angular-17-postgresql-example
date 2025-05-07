@@ -19,7 +19,7 @@ pipeline {
             steps {
                 timeout(time: 20, unit: 'MINUTES') {
                     dir('angular-17-client') {
-                        sh 'npm ci'
+                        sh 'npm install'
                         sh 'npm run build'
                         sh 'npm run build -- --configuration=production'
                     }
