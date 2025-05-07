@@ -17,72 +17,84 @@ pipeline {
 
         stage('Build Angular') {
             steps {
-                dir('angular-17-client') {
-                    sh 'npm install'
-                    sh 'npm run build'
-                    sh 'npm run build -- --configuration=production'
+                timeout(time: 20, unit: 'MINUTES') {
+                    dir('angular-17-client') {
+                        sh 'npm install'
+                        sh 'npm run build'
+                        sh 'npm run build -- --configuration=production'
+                    }
                 }
             }
         }
 
         stage('Build Spring Boot') {
             steps {
-                dir('spring-boot-server') {
-                    sh 'mvn clean package -DskipTests'
+                timeout(time: 20, unit: 'MINUTES') {
+                    dir('spring-boot-server') {
+                        sh 'mvn clean package -DskipTests'
+                    }
                 }
             }
         }
 
         stage('Tests Unitaires Spring Boot') {
             steps {
-                dir('spring-boot-server') {
-                    sh 'mvn test'
+                timeout(time: 15, unit: 'MINUTES') {
+                    dir('spring-boot-server') {
+                        sh 'mvn test'
+                    }
                 }
             }
         }
 
         stage('Tests unitaires Frontend') {
             steps {
-                dir('angular-17-client') {
-                    sh 'npm install'
-                    sh 'ng test --watch=false --no-progress --browsers=ChromeHeadless || true'
+                timeout(time: 15, unit: 'MINUTES') {
+                    dir('angular-17-client') {
+                        sh 'npm install'
+                        sh 'ng test --watch=false --no-progress --browsers=ChromeHeadless || true'
+                    }
                 }
             }
         }
 
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
-                // Lancer les services Docker de test
-                sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
+                timeout(time: 30, unit: 'MINUTES') {
+                    // Lancer les services Docker de test
+                    sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
 
-                // Vérifier que PostgreSQL est prêt depuis le conteneur
-                sh '''
-                    i=0
-                    until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
-                      echo "Waiting for PostgreSQL... ($i)"
-                      sleep 2
-                      i=$((i+1))
-                    done
-                '''
+                    // Vérifier que PostgreSQL est prêt
+                    sh '''
+                        i=0
+                        until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
+                          echo "Waiting for PostgreSQL... ($i)"
+                          sleep 2
+                          i=$((i+1))
+                        done
+                    '''
 
-                // Lancer les tests d'intégration
-                dir('spring-boot-server') {
-                    sh 'mvn verify -P integration-tests'
+                    // Lancer les tests d'intégration
+                    dir('spring-boot-server') {
+                        sh 'mvn verify -P integration-tests'
+                    }
+
+                    // Nettoyage des conteneurs
+                    sh 'docker-compose -f docker-compose.test.yml down'
                 }
-
-                // Nettoyage des conteneurs
-                sh 'docker-compose -f docker-compose.test.yml down'
             }
         }
 
         stage('Tests End-to-End avec Cypress') {
             steps {
-                script {
-                    dir('angular-17-client') {
-                        sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
-                        sh 'npx wait-on http://localhost:4200 --timeout 60000'
-                        sh 'curl http://localhost:4200 || true'
-                        sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+                timeout(time: 30, unit: 'MINUTES') {
+                    script {
+                        dir('angular-17-client') {
+                            sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
+                            sh 'npx wait-on http://localhost:4200 --timeout 60000'
+                            sh 'curl http://localhost:4200 || true'
+                            sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
+                        }
                     }
                 }
             }
@@ -90,12 +102,14 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                script {
-                    dir('spring-boot-server') {
-                        sh 'docker build -t spring-boot-server .'
-                    }
-                    dir('angular-17-client') {
-                        sh 'docker build -t angular-17-client .'
+                timeout(time: 20, unit: 'MINUTES') {
+                    script {
+                        dir('spring-boot-server') {
+                            sh 'docker build -t spring-boot-server .'
+                        }
+                        dir('angular-17-client') {
+                            sh 'docker build -t angular-17-client .'
+                        }
                     }
                 }
             }
@@ -103,8 +117,10 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose build --no-cache'
-                sh 'docker-compose up -d'
+                timeout(time: 20, unit: 'MINUTES') {
+                    sh 'docker-compose build --no-cache'
+                    sh 'docker-compose up -d'
+                }
             }
         }
     }
@@ -116,3 +132,4 @@ pipeline {
         }
     }
 }
+
