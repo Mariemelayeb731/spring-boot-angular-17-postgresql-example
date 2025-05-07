@@ -19,7 +19,7 @@ pipeline {
             steps {
                 timeout(time: 20, unit: 'MINUTES') {
                     dir('angular-17-client') {
-                        sh 'npm install'
+                        sh 'npm install rimraf@latest --save-dev'
                         sh 'npm run build'
                         sh 'npm run build -- --configuration=production'
                     }
