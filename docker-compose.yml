@@ -54,9 +54,7 @@ services:
         condition: service_healthy
     networks:
       - app_net
-
-  
-nginx:
+  nginx:
   build:
     context: .
     dockerfile: Dockerfile.nginx
