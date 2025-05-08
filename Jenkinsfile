@@ -1,10 +1,12 @@
-pipeline { 
+pipeline {
     agent any
 
     environment {
         SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5432/bezkoder_db'
         SPRING_DATASOURCE_USERNAME = 'bezkoder'
         SPRING_DATASOURCE_PASSWORD = 'bez123'
+        DOCKER_IMAGE_BACKEND = 'mariemelayeb/project-backend:latest'
+        DOCKER_IMAGE_FRONTEND = 'mariemelayeb/project-angular:latest'
     }
 
     stages {
@@ -61,10 +63,7 @@ pipeline {
         stage('Tests d\'intégration avec PostgreSQL') {
             steps {
                 timeout(time: 30, unit: 'MINUTES') {
-                    // Lancer les services Docker de test
                     sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
-
-                    // Vérifier que PostgreSQL est prêt
                     sh '''
                         i=0
                         until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
@@ -73,39 +72,35 @@ pipeline {
                           i=$((i+1))
                         done
                     '''
-
-                    // Lancer les tests d'intégration
                     dir('spring-boot-server') {
                         sh 'mvn verify -P integration-tests'
                     }
-
-                    // Nettoyage des conteneurs
                     sh 'docker-compose -f docker-compose.test.yml down'
                 }
             }
         }
 
-       
-        stage('Build Docker Images') {
+        stage('Build et Push Docker Images') {
             steps {
                 timeout(time: 20, unit: 'MINUTES') {
                     script {
                         dir('spring-boot-server') {
-                            sh 'docker build -t spring-boot-server .'
+                            sh 'docker build -t $DOCKER_IMAGE_BACKEND .'
+                            sh 'docker push $DOCKER_IMAGE_BACKEND'
                         }
                         dir('angular-17-client') {
-                            sh 'docker build -t angular-17-client .'
+                            sh 'docker build -t $DOCKER_IMAGE_FRONTEND .'
+                            sh 'docker push $DOCKER_IMAGE_FRONTEND'
                         }
                     }
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Kubernetes') {
             steps {
-                timeout(time: 20, unit: 'MINUTES') {
-                    sh 'docker-compose build --no-cache'
-                    sh 'docker-compose up -d'
+                timeout(time: 15, unit: 'MINUTES') {
+                    sh 'kubectl apply -f k8s/'
                 }
             }
         }
@@ -118,4 +113,3 @@ pipeline {
         }
     }
 }
-
