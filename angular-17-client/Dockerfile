@@ -6,6 +6,11 @@ COPY . .
 RUN npm run build --prod
 
 FROM nginx:alpine
-# Chemin corrigé (relatif au contexte racine)
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=build /app/dist/angular-17-crud /usr/share/nginx/html
+
+# Exposer le port 80
+EXPOSE 80
+
+# Démarrer nginx
+CMD ["nginx", "-g", "daemon off;"]
