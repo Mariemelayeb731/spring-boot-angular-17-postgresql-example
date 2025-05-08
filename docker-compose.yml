@@ -55,7 +55,17 @@ services:
     networks:
       - app_net
 
-
+  nginx:
+    build:
+      context: .
+  
+    ports:
+      - "81:80"
+    depends_on:
+      spring-boot:
+        condition: service_healthy
+    networks:
+      - app_net
 
   pgadmin:
     image: dpage/pgadmin4
