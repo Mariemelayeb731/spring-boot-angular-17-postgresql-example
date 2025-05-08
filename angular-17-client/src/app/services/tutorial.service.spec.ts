@@ -48,7 +48,7 @@ describe('TutorialService', () => {
       expect(result).toEqual(tutorial);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/tutorials/1');
+    const req = httpMock.expectOne('http://localhost:8084/api/tutorials/1');
     expect(req.request.method).toBe('GET');
     req.flush(tutorial);
   });

@@ -1,0 +1,11 @@
+groups:
+  - name: example-alert-rules
+    rules:
+      - alert: SpringBootAppDown
+        expr: up{job="spring-boot-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "L'application Spring Boot est down"
+          description: "Le service {{ $labels.instance }} ne répond plus depuis 1 minute."

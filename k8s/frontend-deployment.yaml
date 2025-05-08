@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ci-cd-project-angular:latest
+          image: mariemelayeb/ci-cd-project2-angular:latest
+
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
