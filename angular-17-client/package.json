@@ -1,15 +1,12 @@
 {
     "name": "angular-17-crud",
     "version": "0.0.0",
-   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
-}
-
-
+    "scripts": {
+        "ng": "ng",
+        "start": "ng serve",
+        "build": "ng build --prod",
+        "watch": "ng build --watch --configuration development",
+        "test": "ng test"
     },
     "private": true,
     "dependencies": {
@@ -40,4 +37,4 @@
         "karma-jasmine-html-reporter": "~2.1.0",
         "typescript": "~5.2.2"
     }
-
+}
