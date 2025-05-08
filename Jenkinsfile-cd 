@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_BACKEND = 'mariemelayeb/project-backend:latest'
+        DOCKER_IMAGE_FRONTEND = 'mariemelayeb/project-angular:latest'
+    }
+
+    stages {
+        stage('Push Docker Images') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    script {
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+
+                        // Push de l'image Backend
+                        dir('spring-boot-server') {
+                            sh 'docker build -t $DOCKER_IMAGE_BACKEND .'
+                            sh 'docker push $DOCKER_IMAGE_BACKEND'
+                        }
+
+                        // Push de l'image Frontend
+                        dir('angular-17-client') {
+                            sh 'docker build -t $DOCKER_IMAGE_FRONTEND .'
+                            sh 'docker push $DOCKER_IMAGE_FRONTEND'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                timeout(time: 15, unit: 'MINUTES') {
+                    sh 'kubectl apply -f k8s/'
+                }
+            }
+        }
+    }
+}
