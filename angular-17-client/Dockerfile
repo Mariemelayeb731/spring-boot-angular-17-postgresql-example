@@ -1,24 +1,13 @@
-
 # Étape 1 : Construire l'application Angular
-FROM node:18 AS build
-
-# Définir le répertoire de travail
+FROM node:18-alpine as angular-builder
 WORKDIR /app
-
-# Copier le fichier package.json et package-lock.json
-COPY package.json package-lock.json ./
-
-# Installer les dépendances
+COPY angular-17-client/package.json angular-17-client/package-lock.json ./
 RUN npm install
+COPY angular-17-client .
+RUN npm run build
 
-# Copier le reste des fichiers de l'application
-COPY . .
-
-# Construire l'application Angular pour la production
-RUN npm run build --prod
-
+# Étape 2 : Servir avec Nginx
 FROM nginx:alpine
-COPY --from=build /app/dist/frontend /usr/share/nginx/html
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Corrigez le chemin pour pointer vers angular-17-crud
+COPY --from=angular-builder /app/dist/angular-17-crud /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
