@@ -58,6 +58,7 @@ services:
   nginx:
     build:
       context: .
+      dockerfile: angular-17-client/Dockerfile
   
     ports:
       - "81:80"
