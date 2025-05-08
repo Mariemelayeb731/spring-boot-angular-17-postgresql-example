@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_BACKEND = 'mariemelayeb/project-backend:latest'
-        DOCKER_IMAGE_FRONTEND = 'mariemelayeb/project-angular:latest'
+        DOCKER_IMAGE_BACKEND = 'mariemelayeb/spring-boot-server:latest'
+        DOCKER_IMAGE_FRONTEND = 'mariemelayeb/angular-17-client:latest'
     
     }
 
@@ -14,24 +14,6 @@ pipeline {
                     url: 'https://github.com/Mariemelayeb731/spring-boot-angular-17-postgresql-example.git'
             }
         }
-
-
-
-        stage('Push Images vers Docker Hub') {
-            steps {
-                script {
-                    dir('spring-boot-server') {
-                       sh 'docker tag spring-boot-server mariemelayeb/spring-boot-server:latest'
-                sh 'docker push mariemelayeb/spring-boot-server:latest'
-                    }
-                    dir('angular-17-client') {
-                        sh 'docker tag angular-17-client mariemelayeb/angular-17-client:latest'
-                sh 'docker push mariemelayeb/angular-17-client:latest'
-                    }
-                }
-            }
-        }
-
         stage('Déploiement sur Kubernetes') {
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
