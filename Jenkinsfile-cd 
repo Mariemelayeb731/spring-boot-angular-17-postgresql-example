@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_BACKEND = 'mariemelayeb/project-backend:latest'
         DOCKER_IMAGE_FRONTEND = 'mariemelayeb/project-angular:latest'
-        K8S_NAMESPACE = 'default'
+    
     }
 
     stages {
@@ -27,16 +27,12 @@ pipeline {
             steps {
                 script {
                     dir('spring-boot-server') {
-                        sh """
-                            docker build -t $DOCKER_IMAGE_BACKEND .
-                            docker push $DOCKER_IMAGE_BACKEND
-                        """
+                       sh 'docker tag spring-boot-server mariemelayeb/spring-boot-server:latest'
+                sh 'docker push mariemelayeb/spring-boot-server:latest'
                     }
                     dir('angular-17-client') {
-                        sh """
-                            docker build -t $DOCKER_IMAGE_FRONTEND .
-                            docker push $DOCKER_IMAGE_FRONTEND
-                        """
+                        sh 'docker tag angular-17-client mariemelayeb/angular-17-client:latest'
+                sh 'docker push mariemelayeb/angular-17-client:latest'
                     }
                 }
             }

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: mariemelayeb/ci-cd-project2-angular:latest
+          image: mariemelayeb/angular-17-client:latest
 
           imagePullPolicy: IfNotPresent
           ports:
