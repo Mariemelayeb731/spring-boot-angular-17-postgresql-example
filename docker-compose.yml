@@ -55,16 +55,7 @@ services:
     networks:
       - app_net
 
-  nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    ports:
-      - "81:80"
-    depends_on:
-      - spring-boot
-    networks:
-      - app_net
+
 
   pgadmin:
     image: dpage/pgadmin4
