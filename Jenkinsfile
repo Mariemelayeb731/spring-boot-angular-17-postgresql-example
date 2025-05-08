@@ -5,8 +5,6 @@ pipeline {
         SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5432/bezkoder_db'
         SPRING_DATASOURCE_USERNAME = 'bezkoder'
         SPRING_DATASOURCE_PASSWORD = 'bez123'
-        DOCKER_IMAGE_BACKEND = 'mariemelayeb/project-backend:latest'
-        DOCKER_IMAGE_FRONTEND = 'mariemelayeb/project-angular:latest'
     }
 
     stages {
@@ -19,89 +17,62 @@ pipeline {
 
         stage('Build Angular') {
             steps {
-                timeout(time: 20, unit: 'MINUTES') {
-                    dir('angular-17-client') {
-                        sh 'npm install'
-                        sh 'npm run build'
-                        sh 'npm run build -- --configuration=production'
-                    }
+                dir('angular-17-client') {
+                    sh 'npm install'
+                    sh 'npm run build -- --configuration=production'
                 }
             }
         }
 
         stage('Build Spring Boot') {
             steps {
-                timeout(time: 20, unit: 'MINUTES') {
-                    dir('spring-boot-server') {
-                        sh 'mvn clean package -DskipTests'
-                    }
+                dir('spring-boot-server') {
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
 
-        stage('Tests Unitaires Spring Boot') {
-            steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    dir('spring-boot-server') {
-                        sh 'mvn test'
-                    }
-                }
-            }
-        }
-
-        stage('Tests unitaires Frontend') {
-            steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    dir('angular-17-client') {
-                        sh 'npm install'
-                        sh 'ng test --watch=false --no-progress --browsers=ChromeHeadless || true'
-                    }
-                }
-            }
-        }
-
-        stage('Tests d\'intégration avec PostgreSQL') {
-            steps {
-                timeout(time: 30, unit: 'MINUTES') {
-                    sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
-                    sh '''
-                        i=0
-                        until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
-                          echo "Waiting for PostgreSQL... ($i)"
-                          sleep 2
-                          i=$((i+1))
-                        done
-                    '''
-                    dir('spring-boot-server') {
-                        sh 'mvn verify -P integration-tests'
-                    }
-                    sh 'docker-compose -f docker-compose.test.yml down'
-                }
-            }
-        }
-
-        stage('Build et Push Docker Images') {
-            steps {
-                timeout(time: 20, unit: 'MINUTES') {
-                    script {
+        stage('Tests Unitaires') {
+            parallel {
+                stage('Backend') {
+                    steps {
                         dir('spring-boot-server') {
-                            sh 'docker build -t $DOCKER_IMAGE_BACKEND .'
-                            sh 'docker push $DOCKER_IMAGE_BACKEND'
+                            sh 'mvn test'
                         }
+                    }
+                }
+                stage('Frontend') {
+                    steps {
                         dir('angular-17-client') {
-                            sh 'docker build -t $DOCKER_IMAGE_FRONTEND .'
-                            sh 'docker push $DOCKER_IMAGE_FRONTEND'
+                            sh 'npm install'
+                            sh 'ng test --watch=false --browsers=ChromeHeadless || true'
                         }
                     }
                 }
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Tests Intégration PostgreSQL') {
             steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    sh 'kubectl apply -f k8s/'
+                sh 'docker-compose -f docker-compose.test.yml up -d --build --force-recreate'
+                sh '''
+                    i=0
+                    until docker exec test-postgres pg_isready -h localhost -p 5432 -U bezkoder || [ $i -gt 20 ]; do
+                      echo "Waiting for PostgreSQL... ($i)"
+                      sleep 2
+                      i=$((i+1))
+                    done
+                '''
+                dir('spring-boot-server') {
+                    sh 'mvn verify -P integration-tests'
                 }
+                sh 'docker-compose -f docker-compose.test.yml down'
+            }
+        }
+
+        stage('Déclencher CD') {
+            steps {
+                build job: 'cd-pipeline', wait: true  // Déclenche le pipeline CD une fois que CI est terminé
             }
         }
     }
