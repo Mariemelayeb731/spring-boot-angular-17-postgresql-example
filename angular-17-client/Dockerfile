@@ -24,5 +24,5 @@ FROM nginx:alpine
 COPY --from=build /app/dist/angular-17-crud /usr/share/nginx/html
 
 # Ajouter la configuration de nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
