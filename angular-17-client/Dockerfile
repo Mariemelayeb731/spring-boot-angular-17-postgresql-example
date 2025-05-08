@@ -17,14 +17,8 @@ COPY . .
 # Construire l'application Angular pour la production
 RUN npm run build --prod
 
-# Étape 2 : Créer l'image de production
 FROM nginx:alpine
-
-# Copier les fichiers générés par la commande build dans le répertoire par défaut de nginx
-COPY --from=build /app/dist/angular-17-crud /usr/share/nginx/html
-
-# Exposer le port 80
+COPY --from=build /app/dist/frontend /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-
-# Démarrer nginx
 CMD ["nginx", "-g", "daemon off;"]
