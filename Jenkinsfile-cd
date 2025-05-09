@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE_BACKEND = 'mariemelayeb/spring-boot-server:latest'
         DOCKER_IMAGE_FRONTEND = 'mariemelayeb/angular-17-client:latest'
+        K8S_NAMESPACE = 'default'  // Définir le namespace Kubernetes, change-le si nécessaire
+        KUBECONFIG = credentials('kubeconfig.txt')  // Utilise un credential Jenkins pour le kube
     
     }
 
