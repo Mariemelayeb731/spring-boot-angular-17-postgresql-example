@@ -3,21 +3,22 @@ kind: Ingress
 metadata:
   name: app-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$2  # Utilise le deuxième groupe de capture dans la regex
 spec:
   ingressClassName: nginx
   rules:
-  - http:
+  - host: springboot.local  # Ou l'URL que tu utilises pour accéder à ton app
+    http:
       paths:
-      - path: /
+      - path: /  # Correspond à la racine pour le frontend
         pathType: Prefix
         backend:
           service:
             name: frontend-service
             port:
               number: 80
-      - path: /api/(.*)  # Use regex here with a capture group
-        pathType: ImplementationSpecific  # Required for regex support
+      - path: /api/(.*)  # Utilisation de regex pour la route /api
+        pathType: ImplementationSpecific  # Nécessaire pour activer le support des regex
         backend:
           service:
             name: backend-service
