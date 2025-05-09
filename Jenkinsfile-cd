@@ -17,9 +17,9 @@ pipeline {
         stage('Déploiement sur Kubernetes') {
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
-                    writeFile file: '/tmp/kubeconfig', text: credentials('kubeconfig.txt')
-                    
-                    sh 'kubectl apply -f k8s/'
+                    withCredentials([file(credentialsId: 'c332f203-f18d-444e-9951-77ac17aa370d', variable: 'KUBECONFIG_FILE')]) {
+                    sh 'kubectl --kubeconfig=$KUBECONFIG_FILE apply -f k8s/'
+                }
                 }
             }
         }
