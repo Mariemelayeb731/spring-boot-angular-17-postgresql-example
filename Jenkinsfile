@@ -109,11 +109,7 @@ pipeline {
                 }
             }
         }
-        stage('Déclencher CD') {
-            steps {
-                build job: 'cd-pipeline', wait: true  // Déclenche le pipeline CD une fois que CI est terminé
-            }
-        }
+        
     }
 
     post {
