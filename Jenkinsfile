@@ -114,7 +114,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'angular-17-client/cypress/screenshots/**/*.png', fingerprint: true
+        
             sh 'docker-compose -f docker-compose.test.yml down -v --remove-orphans'
         }
     }
