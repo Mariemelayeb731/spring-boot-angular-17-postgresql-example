@@ -92,6 +92,8 @@ pipeline {
                             sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
                             sh 'npx wait-on http://localhost:4200 --timeout 60000'
                             sh 'curl http://localhost:4200 || true'
+                            export TERM=xterm
+
                             sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
                         }
                     }
