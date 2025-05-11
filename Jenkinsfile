@@ -84,23 +84,28 @@ pipeline {
                 }
             }
         }
-         stage('Tests End-to-End avec Cypress') {
+        stage('Tests End-to-End avec Cypress') {
             steps {
-                timeout(time: 30, unit: 'MINUTES') {
+                timeout(time: 30, unit: 'MINUTES') { 
                     script {
                         dir('angular-17-client') {
+                    // Lancer le serveur HTTP pour servir l'application Angular
                             sh 'npx http-server ./dist/angular-17-crud -p 4200 &'
+                    
+                    // Attendre que le serveur soit prêt avant de lancer Cypress
                             sh 'npx wait-on http://localhost:4200 --timeout 60000'
+                    
+                    // Vérifier que le serveur répond bien
                             sh 'curl http://localhost:4200 || true'
-                            export TERM=xterm
 
-                            sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npx cypress run'
-                        }
-                    }
+                    // Lancer Cypress avec xvfb-run et définir TERM dans la commande
+                            sh 'xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" TERM=xterm npx cypress run'
                 }
             }
         }
-       
+    }
+}
+
         stage('Build Docker Images') {
             steps {
                 timeout(time: 20, unit: 'MINUTES') {
